@@ -1,1 +1,0 @@
-# LittleMarketKeeper on github
