@@ -7,21 +7,25 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="6">
+        android:layout_height="match_parent"
+        android:layout_weight="5">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="#515151"/>
+        <ImageView
+            android:elevation="5dp"
+            android:padding="5dp"
+            android:src="@drawable/img1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#00695C"/>
 
 
     </LinearLayout>
 
+
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="4"
+        android:layout_height="match_parent"
+        android:layout_weight="5"
         android:orientation="vertical">
 
         <LinearLayout
@@ -34,25 +38,14 @@
                 android:layout_height="match_parent"
                 android:background="#E0E0E0"
                 android:layout_weight="9">
-                <ImageButton
+                <TextView
                     android:id="@+id/imgBtnNews"
-                    android:background="@drawable/imgbtn_touch_news"
-                    android:text="新聞"
+                    android:text="廣告1"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="#E0E0E0"
-                android:layout_weight="9">
 
-                <ImageButton
-                    android:background="@drawable/imgbtn_touch_news"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
-            </LinearLayout>
         </LinearLayout>
 
         <LinearLayout
@@ -65,20 +58,9 @@
                 android:layout_height="match_parent"
                 android:background="#E0E0E0"
                 android:layout_weight="9">
-                <ImageButton
-                    android:background="@drawable/button"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
-            </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="#E0E0E0"
-                android:layout_weight="9">
-
-                <ImageButton
-                    android:background="@drawable/button"
+                <TextView
+                    android:text="廣告2"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
             </LinearLayout>

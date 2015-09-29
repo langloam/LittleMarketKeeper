@@ -31,8 +31,8 @@ public class MainActivity extends ActionBarActivity {
     ViewPager pager;
     ViewPagerAdapter adapter;
     SlidingTabLayout tabs;
-    CharSequence Titles[]={"首頁","商圈列表","我的最愛","更多"};
-    int Numboftabs =4;
+    CharSequence Titles[]={"新聞","商圈","收藏"};
+    int Numboftabs =Titles.length;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

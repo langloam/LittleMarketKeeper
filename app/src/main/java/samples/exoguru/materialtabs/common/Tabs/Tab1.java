@@ -6,9 +6,6 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ImageButton;
-import android.widget.Toast;
 
 import samples.exoguru.materialtabs.R;
 
@@ -19,7 +16,7 @@ public class Tab1 extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View v =inflater.inflate(R.layout.tab_1,container,false);
+        View v =inflater.inflate(R.layout.tab_news,container,false);
         return v;
     }
     /*
