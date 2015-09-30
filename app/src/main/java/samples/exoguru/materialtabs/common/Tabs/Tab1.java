@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 
 import samples.exoguru.materialtabs.R;
 
@@ -19,6 +20,7 @@ public class Tab1 extends Fragment {
         View v =inflater.inflate(R.layout.tab_news,container,false);
         return v;
     }
+
     /*
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);

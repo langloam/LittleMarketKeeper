@@ -2,6 +2,8 @@ package samples.exoguru.materialtabs;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
@@ -13,7 +15,9 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.SearchView;
 
 import java.util.List;
 
@@ -73,12 +77,13 @@ public class MainActivity extends ActionBarActivity {
     }
 
 
-
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
+
+
+
         return true;
     }
 
@@ -111,31 +116,7 @@ public class MainActivity extends ActionBarActivity {
                 PackageManager.COMPONENT_ENABLED_STATE_DEFAULT);
     }
 
-    View.OnClickListener btnShare_Click = new View.OnClickListener(){
-        @Override
-        public void onClick(View view) {
-
-            /*
-            Log.d("btn", "btnCreateEvent");
-            AlertDialog.Builder build = new AlertDialog.Builder(MainActivity.this);
-            build.setTitle("您的代辦事項");
-            build.setMessage("test");
-            Dialog dialog = build.create();
-            dialog.show();
-            //shareTo("分享","test","分享");
-            */
-        }
-    };
 
 
-    private void shareTo(String subject, String body, String chooserTitle) {
-
-        Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
-        sharingIntent.setType("text/plain");
-        sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, subject);
-        sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, body);
-
-        startActivity(Intent.createChooser(sharingIntent, chooserTitle));
-    }
 
 }

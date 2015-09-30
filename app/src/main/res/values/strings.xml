@@ -1,6 +1,10 @@
 <resources>
+    <!--ToolBar-->
     <string name="app_name">PrjApp</string>
 
-    <string name="hello_world">Hello world!</string>
-    <string name="action_settings">Settings</string>
+    <!--Menu_items-->
+    <string name="menu_more">更多</string>
+    <!--搜尋功能-->
+    <string name="app_label">Searchable_Business</string>
+    <string name="search_hint">search_hint測試</string>
 </resources>
