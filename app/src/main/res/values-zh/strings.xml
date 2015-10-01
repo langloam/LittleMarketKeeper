@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">PrjApp</string>
+    <string name="news_tab_title">新聞</string>
+</resources>

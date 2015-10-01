@@ -9,6 +9,7 @@ import samples.exoguru.materialtabs.common.Tabs.Tab1;
 import samples.exoguru.materialtabs.common.Tabs.Tab2;
 import samples.exoguru.materialtabs.common.Tabs.Tab3;
 import samples.exoguru.materialtabs.common.Tabs.TabMore;
+import samples.exoguru.materialtabs.common.Tabs.TabNews;
 
 public class ViewPagerAdapter extends FragmentStatePagerAdapter {
 
@@ -34,14 +35,14 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
                 Tab1 tab1 = new Tab1();
                 return tab1;
             case 1:
+                TabNews tabNews = new TabNews();
+                return tabNews;
+            case 2:
                 Tab2 tab2 = new Tab2();
                 return tab2;
-            case 2:
+            case 3:
                 Tab3 tab3 = new Tab3();
                 return tab3;
-            case 3:
-                TabMore tabMore = new TabMore();
-                return tabMore;
             default:
                 return null;
         }
