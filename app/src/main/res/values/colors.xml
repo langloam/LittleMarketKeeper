@@ -5,4 +5,6 @@
     <color name="ColorPrimaryDark">#388E3C</color>
     <color name="tabsScrollColor">#A5D6A7</color>
 
+    <color name="Tab_Preferential">#ECEFF1</color>
+
 </resources>
