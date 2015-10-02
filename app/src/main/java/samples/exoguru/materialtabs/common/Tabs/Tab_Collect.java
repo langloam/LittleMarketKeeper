@@ -12,11 +12,11 @@ import samples.exoguru.materialtabs.R;
 /**
  * Created by Edwin on 15/02/2015.
  */
-public class Tab3 extends Fragment {
+public class Tab_Collect extends Fragment {
     
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.tab_3,container,false);
+        View v = inflater.inflate(R.layout.tab_collect,container,false);
         return v;
     }
 }

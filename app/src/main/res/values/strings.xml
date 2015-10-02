@@ -3,7 +3,7 @@
     <string name="app_name">PrjApp</string>
 
     <!--Menu_items-->
-    <string name="menu_more">更多</string>
+    <string name="menu_settings">設定</string>
     <!--搜尋功能-->
     <string name="app_label">Searchable_Business</string>
     <string name="search_hint">search_hint測試</string>

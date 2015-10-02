@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    >
+    <include
+        android:id="@+id/tool_bar"
+        layout="@layout/tool_bar"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        />
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="20dp"
+            >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:gravity="center_vertical"
+                >
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:text="訊息通知"
+                    android:textSize="20dp" />
+                <Switch
+                    android:id="@+id/SwitchNotice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginBottom="10dp"
+            android:gravity="center_vertical"
+            >
+            <Button
+                android:paddingLeft="5dp"
+                android:gravity="start|center_vertical"
+                android:textSize="20dp"
+                android:id="@+id/btnShare"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="推薦給朋友"
+                android:background="@null"
+                />
+            <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#CFD8DC" />
+        </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginBottom="10dp"
+                android:gravity="center_vertical"
+                >
+                <Button
+                    android:paddingLeft="5dp"
+                    android:gravity="start|center_vertical"
+                    android:textSize="20dp"
+                    android:id="@+id/btnQuestion"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="問題回報"
+                    android:background="@null"
+                    />
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#CFD8DC" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginBottom="10dp"
+                android:gravity="center_vertical"
+                >
+                <Button
+                    android:paddingLeft="5dp"
+                    android:gravity="start|center_vertical"
+                    android:textSize="20dp"
+                    android:id="@+id/btnCooperation"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="廠商合作"
+                    android:background="@null"
+                    />
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#CFD8DC" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginBottom="10dp"
+                android:gravity="center_vertical"
+                >
+                <Button
+                    android:paddingLeft="5dp"
+                    android:gravity="start|center_vertical"
+                    android:textSize="20dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="版本:0.5v"
+                    android:background="@null"
+                    />
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#CFD8DC" />
+            </LinearLayout>
+
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

@@ -5,11 +5,10 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
-import samples.exoguru.materialtabs.common.Tabs.Tab1;
-import samples.exoguru.materialtabs.common.Tabs.Tab2;
-import samples.exoguru.materialtabs.common.Tabs.Tab3;
-import samples.exoguru.materialtabs.common.Tabs.TabMore;
-import samples.exoguru.materialtabs.common.Tabs.TabNews;
+import samples.exoguru.materialtabs.common.Tabs.Tab_Discount;
+import samples.exoguru.materialtabs.common.Tabs.Tab_Business;
+import samples.exoguru.materialtabs.common.Tabs.Tab_Collect;
+import samples.exoguru.materialtabs.common.Tabs.Tab_News;
 
 public class ViewPagerAdapter extends FragmentStatePagerAdapter {
 
@@ -32,17 +31,17 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
 
         switch (position){
             case 0:
-                Tab1 tab1 = new Tab1();
-                return tab1;
+                Tab_Discount tabDiscount = new Tab_Discount();
+                return tabDiscount;
             case 1:
-                TabNews tabNews = new TabNews();
+                Tab_News tabNews = new Tab_News();
                 return tabNews;
             case 2:
-                Tab2 tab2 = new Tab2();
+                Tab_Business tab2 = new Tab_Business();
                 return tab2;
             case 3:
-                Tab3 tab3 = new Tab3();
-                return tab3;
+                Tab_Collect tabBusiness = new Tab_Collect();
+                return tabBusiness;
             default:
                 return null;
         }
