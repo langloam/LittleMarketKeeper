@@ -113,7 +113,4 @@ public class MainActivity extends AppCompatActivity {
                 PackageManager.COMPONENT_ENABLED_STATE_DEFAULT);
     }
 
-
-
-
 }
