@@ -23,6 +23,10 @@
             android:name=".common.Tabs.Tab_Settings"
             android:label="設定"
             />
+        <activity
+            android:name=".common.QRcode.QRcodeScan"
+            android:label="QRcode掃描"
+            />
     </application>
 
 </manifest>

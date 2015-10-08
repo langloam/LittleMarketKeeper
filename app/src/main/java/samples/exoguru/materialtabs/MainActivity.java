@@ -3,6 +3,7 @@ package samples.exoguru.materialtabs;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.net.Uri;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
@@ -14,6 +15,7 @@ import android.view.MenuItem;
 import java.util.List;
 
 import samples.exoguru.materialtabs.common.Adapter.ViewPagerAdapter;
+import samples.exoguru.materialtabs.common.QRcode.QRcodeScan;
 import samples.exoguru.materialtabs.common.Tabs.Tab_Settings;
 import samples.exoguru.materialtabs.common.view.SlidingTabLayout;
 
@@ -88,18 +90,19 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
 
-        if (id == R.id.menu_settings) {
-            Intent intent = new Intent(MainActivity.this, Tab_Settings.class);
-            startActivity(intent);
-            return true;
+        switch (item.getItemId()){
+            case R.id.menu_settings:
+                Intent intent = new Intent(MainActivity.this, Tab_Settings.class);
+                startActivity(intent);
+                return true;
+            case R.id.menu_QRCode:
+                startActivity((new Intent(MainActivity.this, QRcodeScan.class)));
+                return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
-
-
 
 
     private List<ResolveInfo> getShareTargets(){

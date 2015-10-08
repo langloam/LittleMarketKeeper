@@ -1,6 +1,8 @@
 package samples.exoguru.materialtabs.common.Tabs;
 
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -126,4 +128,6 @@ public class Tab_Discount extends Fragment {
         }
     };
     */
+
+
 }

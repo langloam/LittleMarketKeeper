@@ -3,8 +3,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".MainActivity">
     <item
+        android:id="@+id/menu_QRCode"
+        android:orderInCategory="100"
+        android:title="@string/menu_QRcode"
+        app:showAsAction="always"
+        android:icon="@drawable/icon_qr_code"
+        />
+    <item
         android:id="@+id/menu_settings"
         android:orderInCategory="100"
-        android:title="@string/menu_settings"
+        android:title="@string/menu_Settings"
         app:showAsAction="never" />
 </menu>
