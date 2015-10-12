@@ -42,7 +42,4 @@ public class QRcodeScan extends Activity {
         else
             this.finish();
     }
-
-
-
 }
