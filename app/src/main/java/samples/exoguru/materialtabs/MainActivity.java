@@ -1,4 +1,4 @@
-﻿package samples.exoguru.materialtabs;
+package samples.exoguru.materialtabs;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -20,7 +20,7 @@ import samples.exoguru.materialtabs.common.Tabs.Tab_Settings;
 import samples.exoguru.materialtabs.common.view.SlidingTabLayout;
 
 /**
- * Created by Edwin on 15/02/2015
+ * Created by Edwin on 15/02/2015.
  */
 public class MainActivity extends AppCompatActivity {
 
