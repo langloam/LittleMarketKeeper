@@ -8,6 +8,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
+import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
 import org.json.JSONArray;
@@ -19,41 +21,26 @@ import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.Map;
 
 import samples.exoguru.materialtabs.R;
+import samples.exoguru.materialtabs.common.ClassFactory.CNewsListItem;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class Tab_News extends Fragment {
 
+    View layout;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        StrictMode.ThreadPolicy l_policy =  new StrictMode.ThreadPolicy.Builder().permitAll().build();
-        StrictMode.setThreadPolicy(l_policy);
+        SimpleAdapter ItemAdapter = new SimpleAdapter(this.getContext(), CNewsListItem.getItem(),R.layout.news_list_item, new String[] {"lblnewsTitle", "lblnewsType"}, new int[] {R.id.lblnewsTitle, R.id.lblnewsType});
 
-        try {
-            URL url=new URL("http://192.168.1.58:8081/myWebSite/Default.aspx");
-            URLConnection conn=url.openConnection();
-            InputStream streamIn=conn.getInputStream();
-
-            BufferedReader r = new BufferedReader(new InputStreamReader(streamIn));
-            JSONArray jsonArray= new JSONArray(r.readLine());
-            TextView lblnewsTitle = (TextView)getView().findViewById(R.id.lblnewsTitle);
-            lblnewsTitle.setText(jsonArray.getJSONObject(0).get("newsTitle").toString());
-        } catch (MalformedURLException e) {
-            Log.d("URLERROR", e.getMessage());
-            e.printStackTrace();
-        }catch (IOException e) {
-            Log.d("URLERROR",e.getMessage());
-            e.printStackTrace();
-        }catch (Exception e) {
-            Log.d("URLERROR",e.getMessage());
-            e.printStackTrace();
-        }
+        ListView newsList = (ListView)this.getActivity().findViewById(R.id.newsListView);
+        newsList.setAdapter(ItemAdapter);
     }
 
     @Override
@@ -63,8 +50,8 @@ public class Tab_News extends Fragment {
 
 
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.tab_news, container, false);
-
+        layout = inflater.inflate(R.layout.tab_news, container, false);
+        return  layout;
     }
 
 
