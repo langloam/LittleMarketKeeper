@@ -26,10 +26,6 @@ public class Tab_Business extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        SearchView searchView = (SearchView) getView().findViewById(R.id.UI_search);
-        searchView.setSubmitButtonEnabled(true);
-        searchView.setIconifiedByDefault(false);
-        searchView.setQueryHint("請輸入欲搜尋的商圈");
 
 
     }
