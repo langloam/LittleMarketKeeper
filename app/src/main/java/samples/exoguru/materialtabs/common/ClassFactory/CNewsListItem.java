@@ -38,7 +38,7 @@ public class CNewsListItem{
         StrictMode.setThreadPolicy(l_policy);
 
         try {
-            URL url=new URL("http://192.168.1.58:8081/myWebSite/Default.aspx");
+            URL url=new URL("http://192.168.1.58:8081/myWebSite/Findnews.aspx");
             URLConnection conn=url.openConnection();
             InputStream streamIn=conn.getInputStream();
 
