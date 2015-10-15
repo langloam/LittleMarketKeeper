@@ -28,6 +28,7 @@ public class Menu_Settings_Contact extends Activity {
         //設定功能表項目陣列，使用createFromResource()
         ArrayAdapter adapter = ArrayAdapter.createFromResource(Menu_Settings_Contact.this, R.array.ui_spinner, android.R.layout.simple_spinner_item);
         //設定下拉選單的樣式
+
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
 
