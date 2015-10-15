@@ -8,4 +8,12 @@
 
     </style>
 
-</resources>
+    <style name="Theme.Contact" parent="android:style/Theme.Dialog">
+
+        <item name="android:windowBackground">@drawable/bg</item>
+
+    </style>
+
+
+
+    </resources>

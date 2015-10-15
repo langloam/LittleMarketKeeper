@@ -3,7 +3,6 @@ package samples.exoguru.materialtabs;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
-import android.net.Uri;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
@@ -12,11 +11,13 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.facebook.FacebookSdk;
+
 import java.util.List;
 
 import samples.exoguru.materialtabs.common.Adapter.ViewPagerAdapter;
-import samples.exoguru.materialtabs.common.QRcode.QRcodeScan;
-import samples.exoguru.materialtabs.common.Tabs.Tab_Settings;
+import samples.exoguru.materialtabs.common.Menu.Menu_QRcode;
+import samples.exoguru.materialtabs.common.Menu.Menu_Settings;
 import samples.exoguru.materialtabs.common.view.SlidingTabLayout;
 
 /**
@@ -35,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        FacebookSdk.sdkInitialize(this.getApplicationContext());
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -93,11 +95,11 @@ public class MainActivity extends AppCompatActivity {
 
         switch (item.getItemId()){
             case R.id.menu_settings:
-                Intent intent = new Intent(MainActivity.this, Tab_Settings.class);
+                Intent intent = new Intent(MainActivity.this, Menu_Settings.class);
                 startActivity(intent);
                 return true;
             case R.id.menu_QRCode:
-                startActivity((new Intent(MainActivity.this, QRcodeScan.class)));
+                startActivity((new Intent(MainActivity.this, Menu_QRcode.class)));
                 return true;
         }
 

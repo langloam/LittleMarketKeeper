@@ -1,4 +1,4 @@
-package samples.exoguru.materialtabs.common.QRcode;
+package samples.exoguru.materialtabs.common.Menu;
 
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
@@ -6,7 +6,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 
-public class QRcodeScan extends Activity {
+public class Menu_QRcode extends Activity {
 
 
     @Override
@@ -42,4 +42,7 @@ public class QRcodeScan extends Activity {
         else
             this.finish();
     }
+
+
+
 }

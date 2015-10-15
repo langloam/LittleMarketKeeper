@@ -9,11 +9,25 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
+
+
+        <activity android:name="com.facebook.FacebookActivity"
+            android:configChanges=
+                "keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:label="@string/app_name" />
+
+        <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/>
+
+
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
+            android:screenOrientation="portrait"
             >
 
+            <!--screenOrientation為固定畫面的方向-->
+            <!--參數為 landscape為橫向 portrait為縱向 nosensor為關閉重力感應器-->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -22,13 +36,23 @@
         </activity>
 
         <activity
-            android:name=".common.Tabs.Tab_Settings"
+            android:name=".common.Menu.Menu_Settings"
             android:label="設定"
+            android:screenOrientation="portrait"
             />
         <activity
-            android:name=".common.QRcode.QRcodeScan"
+            android:name=".common.Menu.Menu_QRcode"
             android:label="QRcode掃描"
+            android:screenOrientation="portrait"
             />
+        <activity
+            android:name=".common.Menu.Menu_Settings_Contact"
+            android:label="聯絡我們"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.Contact"
+            />
+
+
     </application>
 
 </manifest>

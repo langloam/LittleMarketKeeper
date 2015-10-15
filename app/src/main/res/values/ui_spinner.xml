@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="ui_spinner">
+        <item>問題回報</item>
+        <item>廠商合作</item>
+    </string-array>
+</resources>

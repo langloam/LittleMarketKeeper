@@ -7,6 +7,8 @@
 
     <color name="Tab_Preferential">#ECEFF1</color>
 
-    <color name="test">#000000</color>
+    <color name="White">#FFFFFF</color>
+    <color name="text">#000000</color>
+    <color name="Grey">#9E9E9E</color>
 
 </resources>

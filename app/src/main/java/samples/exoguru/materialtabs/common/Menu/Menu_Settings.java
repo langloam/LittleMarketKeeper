@@ -1,10 +1,9 @@
-package samples.exoguru.materialtabs.common.Tabs;
+package samples.exoguru.materialtabs.common.Menu;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
@@ -12,12 +11,12 @@ import android.widget.Button;
 import samples.exoguru.materialtabs.R;
 
 
-public class Tab_Settings extends AppCompatActivity implements View.OnTouchListener {
+public class Menu_Settings extends AppCompatActivity implements View.OnTouchListener {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.tab_settings);
+        setContentView(R.layout.menu_settings);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.tool_bar);
         setSupportActionBar(toolbar);
@@ -48,32 +47,31 @@ public class Tab_Settings extends AppCompatActivity implements View.OnTouchListe
 
 
     private void Init() {
-        btnQuestion = (Button) findViewById(R.id.btnQuestion);
-        btnQuestion.setOnTouchListener(this);
-        btnCooperation = (Button) findViewById(R.id.btnCooperation);
-        btnCooperation.setOnTouchListener(this);
-        btnShare = (Button) findViewById(R.id.btnShare);
-        btnShare.setOnTouchListener(new View.OnTouchListener() {
+        btnVersion = (Button) findViewById(R.id.btnVersion);
+        btnVersion.setOnTouchListener(this);
+
+        btnContact = (Button) findViewById(R.id.btnContact);
+        btnContact.setOnTouchListener(this);
+
+
+
+        btnContact.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if(event.getAction() == MotionEvent.ACTION_DOWN){
-                    v.setBackgroundColor(0XFFCFD8DC);
-                }
-                else if(event.getAction() == MotionEvent.ACTION_UP){
-                    v.setBackgroundColor(0X00000000);
-                }
-                return false;
+            public void onClick(View v) {
+                startActivity(new Intent(Menu_Settings.this,Menu_Settings_Contact.class));
             }
         });
+
+        btnShare = (Button) findViewById(R.id.btnShare);
+        btnShare.setOnTouchListener(this);
         btnShare.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 shareTo("分享", "Http://www.google.com.tw", "分享");
-
             }
         });
     }
 
-    Button btnShare,btnQuestion,btnCooperation;
+    Button btnShare, btnContact,btnVersion;
 
 }

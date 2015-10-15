@@ -1,10 +1,7 @@
 package samples.exoguru.materialtabs.common.ClassFactory;
 
-import android.content.Context;
 import android.os.StrictMode;
 import android.util.Log;
-import android.view.View;
-import android.widget.TextView;
 
 import org.json.JSONArray;
 
@@ -20,12 +17,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import samples.exoguru.materialtabs.R;
-
 /**
  * Created by Louis on 2015/10/13.
  */
-public class CNewsListItem{
+public class CNewsListItem {
     static private List<Map<String, Object>> item = new ArrayList<>();
 
     public static List<Map<String, Object>> getItem() {
@@ -38,7 +33,8 @@ public class CNewsListItem{
         StrictMode.setThreadPolicy(l_policy);
 
         try {
-            URL url=new URL("http://192.168.1.58:8081/myWebSite/Findnews.aspx");
+
+            URL url=new URL("http://192.168.1.68:8081/myWebSite/Findnews.aspx");
             URLConnection conn=url.openConnection();
             InputStream streamIn=conn.getInputStream();
 
