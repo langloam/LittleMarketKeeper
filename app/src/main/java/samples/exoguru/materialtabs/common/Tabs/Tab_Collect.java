@@ -1,5 +1,7 @@
 package samples.exoguru.materialtabs.common.Tabs;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -54,6 +56,8 @@ public class Tab_Collect extends Fragment {
     List<String> listDataHeader;
     HashMap<String, List<String>> listDataChild;
 
+    List<String> business,stores;
+
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.tab_collect,container, false);
@@ -74,6 +78,7 @@ public class Tab_Collect extends Fragment {
         // get the listview
         expListView = (ExpandableListView) getActivity().findViewById(R.id.lvExp);
 
+
         // preparing list data
         prepareListData();
 
@@ -81,7 +86,6 @@ public class Tab_Collect extends Fragment {
 
         // setting list adapter
         expListView.setAdapter(listAdapter);
-
 
 
         // Listview Group click listener
@@ -135,7 +139,7 @@ public class Tab_Collect extends Fragment {
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
 
-
+                /*
                 Toast.makeText(
                         getActivity(),
                         listDataHeader.get(groupPosition)
@@ -144,7 +148,7 @@ public class Tab_Collect extends Fragment {
                                 listDataHeader.get(groupPosition)).get(
                                 childPosition), Toast.LENGTH_SHORT)
                         .show();
-
+                */
                 return false;
             }
         });
@@ -162,9 +166,9 @@ public class Tab_Collect extends Fragment {
         listDataHeader.add("店家");
 
         // Adding 子項目(商圈)
-        List<String> business = new ArrayList<String>();
+        business = new ArrayList<String>();
         // Adding 子項目(店家)
-        List<String> stores = new ArrayList<String>();
+        stores = new ArrayList<String>();
 
         //查詢SQLite的表格是否有收藏
         Cursor table = (new CDbManager(this.getActivity())).QueryBySql("SELECT * FROM tCollect");
@@ -187,29 +191,47 @@ public class Tab_Collect extends Fragment {
         listDataChild.put(listDataHeader.get(0), business); // Header, Child data
         listDataChild.put(listDataHeader.get(1), stores);
 
+
+        //長按事件
+        expListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                if (ExpandableListView.getPackedPositionType(id) == ExpandableListView.PACKED_POSITION_TYPE_CHILD) {
+                    if(!view.toString().equals("尚未收藏商圈") && !view.toString().equals("尚未收藏店家")){
+                        int groupPosition = ExpandableListView.getPackedPositionGroup(id);
+                        int childPosition = ExpandableListView.getPackedPositionChild(id);
+
+                        AlertDialog.Builder deleteDtores = new AlertDialog.Builder(getActivity());
+
+                        deleteDtores.setTitle("刪除").setMessage("你確認要刪除「" + position +  "」嗎?")
+                                .setPositiveButton("確定", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+
+                                        Toast.makeText(getActivity().getApplicationContext(),which,Toast.LENGTH_SHORT).show();
+                                        //stores.remove(which);
+                                    }
+                                })
+                                .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+
+                                    }
+                                })
+                                .create().show();
+                    }
+
+
+                    return true;
+                }
+                return false;
+            }
+        });
+
     }
 
 
-    //長按事件
-    /*
-    getExpandableListView().setOnItemLongClickListener(new OnItemLongClickListener() {
-        @Override
-        public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-            if (ExpandableListView.getPackedPositionType(id) == ExpandableListView.PACKED_POSITION_TYPE_CHILD) {
-                int groupPosition = ExpandableListView.getPackedPositionGroup(id);
-                int childPosition = ExpandableListView.getPackedPositionChild(id);
 
-                // You now have everything that you would as if this was an OnChildClickListener()
-                // Add your logic here.
-
-                // Return true as we are handling the event.
-                return true;
-            }
-
-            return false;
-        }
-    });
-    */
 
     //查詢APP HashKey
     private void HashKey() {
