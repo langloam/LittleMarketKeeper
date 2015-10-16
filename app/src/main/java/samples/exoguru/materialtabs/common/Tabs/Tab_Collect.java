@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -12,6 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ExpandableListAdapter;
 
 import android.widget.ExpandableListView;
@@ -21,6 +23,7 @@ import android.widget.ExpandableListView.OnGroupCollapseListener;
 import android.widget.ExpandableListView.OnGroupExpandListener;
 import android.widget.Toast;
 
+import samples.exoguru.materialtabs.DB.CDbManager;
 import samples.exoguru.materialtabs.R;
 
 import com.facebook.AccessToken;
@@ -122,17 +125,17 @@ public class Tab_Collect extends Fragment {
             }
         });
 
+
         //內容
         // Listview on child click listener
+
         expListView.setOnChildClickListener(new OnChildClickListener() {
 
-            @Override
-            public boolean onChildClick(ExpandableListView parent, View v,
-                                        int groupPosition, int childPosition, long id) {
-                // TODO Auto-generated method stub
 
-                //
-                /*
+            @Override
+            public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
+
+
                 Toast.makeText(
                         getActivity(),
                         listDataHeader.get(groupPosition)
@@ -141,7 +144,7 @@ public class Tab_Collect extends Fragment {
                                 listDataHeader.get(groupPosition)).get(
                                 childPosition), Toast.LENGTH_SHORT)
                         .show();
-                */
+
                 return false;
             }
         });
@@ -154,25 +157,61 @@ public class Tab_Collect extends Fragment {
         listDataHeader = new ArrayList<String>();
         listDataChild = new HashMap<String, List<String>>();
 
-
-        // Adding child data
+        // Adding 主項目
         listDataHeader.add("商圈");
         listDataHeader.add("店家");
 
-        // Adding child data
-        List<String> top250 = new ArrayList<String>();
-        top250.add("尚未收藏商圈");
+        // Adding 子項目(商圈)
+        List<String> business = new ArrayList<String>();
+        // Adding 子項目(店家)
+        List<String> stores = new ArrayList<String>();
 
+        //查詢SQLite的表格是否有收藏
+        Cursor table = (new CDbManager(this.getActivity())).QueryBySql("SELECT * FROM tCollect");
+        if(table.getCount()>0){
+            String[] datas=new String[table.getCount()];
+            table.moveToFirst();
 
-        List<String> nowShowing = new ArrayList<String>();
-        nowShowing.add("尚未收藏店家");
+            for(int i=0;i<datas.length;i++){
+                business.add(table.getString(3));
+                stores.add(table.getString(4));
+                //datas[i]=table.getString(3)+"\r\n"+table.getString(4);
+                table.moveToNext();
+            }
 
+        }else {
+            business.add("尚未收藏商圈");
+            stores.add("尚未收藏店家");
+        }
 
-        listDataChild.put(listDataHeader.get(0), top250); // Header, Child data
-        listDataChild.put(listDataHeader.get(1), nowShowing);
+        listDataChild.put(listDataHeader.get(0), business); // Header, Child data
+        listDataChild.put(listDataHeader.get(1), stores);
 
     }
 
+
+    //長按事件
+    /*
+    getExpandableListView().setOnItemLongClickListener(new OnItemLongClickListener() {
+        @Override
+        public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+            if (ExpandableListView.getPackedPositionType(id) == ExpandableListView.PACKED_POSITION_TYPE_CHILD) {
+                int groupPosition = ExpandableListView.getPackedPositionGroup(id);
+                int childPosition = ExpandableListView.getPackedPositionChild(id);
+
+                // You now have everything that you would as if this was an OnChildClickListener()
+                // Add your logic here.
+
+                // Return true as we are handling the event.
+                return true;
+            }
+
+            return false;
+        }
+    });
+    */
+
+    //查詢APP HashKey
     private void HashKey() {
         PackageInfo info;
         try{

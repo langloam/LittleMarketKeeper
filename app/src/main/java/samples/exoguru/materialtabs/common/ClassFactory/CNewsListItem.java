@@ -34,7 +34,7 @@ public class CNewsListItem {
 
         try {
 
-            URL url=new URL("http://192.168.1.68:8081/myWebSite/Findnews.aspx");
+            URL url=new URL("http://mylittlemarket.azurewebsites.net/FindNews.aspx");
             URLConnection conn=url.openConnection();
             InputStream streamIn=conn.getInputStream();
 
