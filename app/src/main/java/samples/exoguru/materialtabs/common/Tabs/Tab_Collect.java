@@ -198,36 +198,32 @@ public class Tab_Collect extends Fragment {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                 if (ExpandableListView.getPackedPositionType(id) == ExpandableListView.PACKED_POSITION_TYPE_CHILD) {
-                    if(!view.toString().equals("尚未收藏商圈") && !view.toString().equals("尚未收藏店家")){
-                        final int groupPosition = ExpandableListView.getPackedPositionGroup(id);
-                        final int childPosition = ExpandableListView.getPackedPositionChild(id);
 
-                        AlertDialog.Builder delete_Stores_Business = new AlertDialog.Builder(getActivity());
+                    final int groupPosition = ExpandableListView.getPackedPositionGroup(id);
+                    final int childPosition = ExpandableListView.getPackedPositionChild(id);
 
-                        delete_Stores_Business.setTitle("刪除").setMessage("確認刪除?")
-                                .setPositiveButton("確定", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        if(groupPosition == 0){
-                                            business.remove(childPosition);
-                                        }
-                                        else if(groupPosition == 1){
-                                            stores.remove(childPosition);
-                                        }
+                    AlertDialog.Builder delete_Stores_Business = new AlertDialog.Builder(getActivity());
 
-                                        Toast.makeText(getActivity().getApplicationContext(), "test", Toast.LENGTH_SHORT).show();
-                                        //stores.remove(which);
+                    delete_Stores_Business.setTitle("刪除").setMessage("確認刪除?")
+                            .setPositiveButton("確定", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    if (groupPosition == 0) {
+                                        business.remove(childPosition);
+                                        expListView.setAdapter(listAdapter);
+                                    } else if (groupPosition == 1) {
+                                        stores.remove(childPosition);
+                                        expListView.setAdapter(listAdapter);
                                     }
-                                })
-                                .setNegativeButton("取消", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
+                                }
+                            })
+                            .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
 
-                                    }
-                                })
-                                .create().show();
-                    }
-
+                                }
+                            })
+                            .create().show();
 
                     return true;
                 }
