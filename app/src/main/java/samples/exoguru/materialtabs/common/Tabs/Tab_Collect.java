@@ -23,6 +23,7 @@ import android.widget.ExpandableListView.OnChildClickListener;
 import android.widget.ExpandableListView.OnGroupClickListener;
 import android.widget.ExpandableListView.OnGroupCollapseListener;
 import android.widget.ExpandableListView.OnGroupExpandListener;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import samples.exoguru.materialtabs.DB.CDbManager;
@@ -198,17 +199,23 @@ public class Tab_Collect extends Fragment {
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                 if (ExpandableListView.getPackedPositionType(id) == ExpandableListView.PACKED_POSITION_TYPE_CHILD) {
                     if(!view.toString().equals("尚未收藏商圈") && !view.toString().equals("尚未收藏店家")){
-                        int groupPosition = ExpandableListView.getPackedPositionGroup(id);
-                        int childPosition = ExpandableListView.getPackedPositionChild(id);
+                        final int groupPosition = ExpandableListView.getPackedPositionGroup(id);
+                        final int childPosition = ExpandableListView.getPackedPositionChild(id);
 
-                        AlertDialog.Builder deleteDtores = new AlertDialog.Builder(getActivity());
+                        AlertDialog.Builder delete_Stores_Business = new AlertDialog.Builder(getActivity());
 
-                        deleteDtores.setTitle("刪除").setMessage("你確認要刪除「" + position +  "」嗎?")
+                        delete_Stores_Business.setTitle("刪除").setMessage("確認刪除?")
                                 .setPositiveButton("確定", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
+                                        if(groupPosition == 0){
+                                            business.remove(childPosition);
+                                        }
+                                        else if(groupPosition == 1){
+                                            stores.remove(childPosition);
+                                        }
 
-                                        Toast.makeText(getActivity().getApplicationContext(),which,Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(getActivity().getApplicationContext(), "test", Toast.LENGTH_SHORT).show();
                                         //stores.remove(which);
                                     }
                                 })
