@@ -4,28 +4,10 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        >
-        <Gallery
-            android:id="@+id/UI_Gallery"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fadingEdge="none"
-            android:scrollbars="none"
-            >
-        </Gallery>
-
-
-    </LinearLayout>
-
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         >
-
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -34,6 +16,16 @@
             android:padding="10dp"
             android:background="@color/Tab_Preferential"
             >
+
+            <Gallery
+                android:id="@+id/UI_Gallery"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fadingEdge="none"
+                android:scrollbars="none"
+                android:layout_marginBottom="10dp"
+                >
+            </Gallery>
 
             <TextView
                 android:background="#FFFFFF"

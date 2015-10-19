@@ -23,6 +23,61 @@ public class CDbManager extends SQLiteOpenHelper {
         sql+=" fBusiness TEXT ,";
         sql+=" fStores TEXT)";
         db.execSQL(sql);
+
+        sql="CREATE TABLE tMarket (";
+        sql+=" _id INTEGER PRIMARY KEY ,";
+        sql+=" fId TEXT ,";
+        sql+=" fName TEXT ,";
+        sql+=" fType TEXT ,";
+        sql+=" fArea TEXT ,";
+        sql+=" fRange INTEGER ,";
+        sql+=" fImg TEXT ,";
+        sql+=" fInfo TEXT ,";
+        sql+=" fBegindate TEXT ,";
+        sql+=" fEnddate TEXT ,";
+        sql+=" fSubmitdate TEXT)";
+        db.execSQL(sql);
+
+        sql="CREATE TABLE tShop (";
+        sql+=" _id INTEGER PRIMARY KEY ,";
+        sql+=" fId TEXT ,";
+        sql+=" fName TEXT ,";
+        sql+=" fAddress TEXT ,";
+        sql+=" fInfo TEXT)";
+        db.execSQL(sql);
+
+        sql="CREATE TABLE tDiscount (";
+        sql+=" _id INTEGER PRIMARY KEY ,";
+        sql+=" fId TEXT ,";
+        sql+=" fShopid TEXT ,";
+        sql+=" fName TEXT ,";
+        sql+=" fInfo TEXT ,";
+        sql+=" fBegindate TEXT ,";
+        sql+=" fEnddate TEXT ,";
+        sql+=" fBuilddate TEXT)";
+        db.execSQL(sql);
+
+        sql="CREATE TABLE tNews (";
+        sql+=" _id INTEGER PRIMARY KEY ,";
+        sql+=" fId TEXT ,";
+        sql+=" fType TEXT ,";
+        sql+=" fTitle TEXT ,";
+        sql+=" fContent TEXT ,";
+        sql+=" fImgurl TEXT ,";
+        sql+=" fBuilddate TEXT)";
+        db.execSQL(sql);
+
+        sql="CREATE TABLE tMarkeEvent (";
+        sql+=" _id INTEGER PRIMARY KEY ,";
+        sql+=" fId TEXT ,";
+        sql+=" fMarkeid TEXT ,";
+        sql+=" fName TEXT ,";
+        sql+=" fInfo TEXT ,";
+        sql+=" fBegindate TEXT ,";
+        sql+=" fEnddate TEXT ,";
+        sql+=" fBuilddate TEXT)";
+        db.execSQL(sql);
+
     }
 
     public Cursor QueryBySql(String sql){
