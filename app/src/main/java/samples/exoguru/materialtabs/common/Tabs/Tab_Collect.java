@@ -7,6 +7,8 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
 import android.database.Cursor;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -27,6 +29,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import samples.exoguru.materialtabs.DB.CDbManager;
+import samples.exoguru.materialtabs.MainActivity;
 import samples.exoguru.materialtabs.R;
 
 import com.facebook.AccessToken;
@@ -172,20 +175,34 @@ public class Tab_Collect extends Fragment {
         stores = new ArrayList<String>();
 
         //查詢SQLite的表格是否有收藏
-        Cursor table = (new CDbManager(this.getActivity())).QueryBySql("SELECT * FROM tCollect");
+        Cursor table;
+        //查詢商圈
+        table = (new CDbManager(this.getActivity())).QueryBySql("SELECT * FROM tCollectBusiness");
         if(table.getCount()>0){
             String[] datas=new String[table.getCount()];
             table.moveToFirst();
 
             for(int i=0;i<datas.length;i++){
-                business.add(table.getString(3));
-                stores.add(table.getString(4));
-                //datas[i]=table.getString(3)+"\r\n"+table.getString(4);
+                business.add(table.getString(4));
                 table.moveToNext();
             }
 
         }else {
             business.add("尚未收藏商圈");
+        }
+
+        //查詢店家
+        table = (new CDbManager(this.getActivity())).QueryBySql("SELECT * FROM tCollectStores");
+        if(table.getCount()>0){
+            String[] datas=new String[table.getCount()];
+            table.moveToFirst();
+
+            for(int i=0;i<datas.length;i++){
+                stores.add(table.getString(4));
+                table.moveToNext();
+            }
+
+        }else {
             stores.add("尚未收藏店家");
         }
 
@@ -202,19 +219,57 @@ public class Tab_Collect extends Fragment {
                     final int groupPosition = ExpandableListView.getPackedPositionGroup(id);
                     final int childPosition = ExpandableListView.getPackedPositionChild(id);
 
+
                     AlertDialog.Builder delete_Stores_Business = new AlertDialog.Builder(getActivity());
 
                     delete_Stores_Business.setTitle("刪除").setMessage("確認刪除?")
                             .setPositiveButton("確定", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    if (groupPosition == 0) {
-                                        business.remove(childPosition);
-                                        expListView.setAdapter(listAdapter);
-                                    } else if (groupPosition == 1) {
-                                        stores.remove(childPosition);
-                                        expListView.setAdapter(listAdapter);
+                                    //要有網路才可以刪除(避免同步問題
+                                    switch (groupPosition){
+
+                                        case 0:
+
+                                            //有登入FB
+                                            ConnectivityManager conManager = (ConnectivityManager) getActivity().getSystemService(getActivity().CONNECTIVITY_SERVICE);//先取得此service
+                                            NetworkInfo networInfo = conManager.getActiveNetworkInfo();       //在取得相關資訊
+
+                                            if (networInfo == null || !networInfo.isAvailable()){ //判斷是否有網路
+
+                                                new AlertDialog.Builder(getActivity())
+                                                        .setMessage("刪除失敗,偵測不到網路,請檢查您的網路狀態")
+                                                        .show();
+
+                                            }
+                                            else{
+                                                business.remove(childPosition);
+                                                expListView.setAdapter(listAdapter);
+                                                (new CDbManager(getActivity())).Delete("tCollectBusiness", childPosition);
+                                            }
+
+
+
+                                        case 1:
+
+                                            conManager = (ConnectivityManager) getActivity().getSystemService(getActivity().CONNECTIVITY_SERVICE);//先取得此service
+                                            networInfo = conManager.getActiveNetworkInfo();       //在取得相關資訊
+
+                                            if (networInfo == null || !networInfo.isAvailable()){ //判斷是否有網路
+
+                                                new AlertDialog.Builder(getActivity())
+                                                        .setMessage("刪除失敗,偵測不到網路,請檢查您的網路狀態")
+                                                        .show();
+
+                                            }
+                                            else{
+                                                stores.remove(childPosition);
+                                                expListView.setAdapter(listAdapter);
+                                                (new CDbManager(getActivity())).Delete("tCollectStores", childPosition);
+                                            }
+
                                     }
+
                                 }
                             })
                             .setNegativeButton("取消", new DialogInterface.OnClickListener() {

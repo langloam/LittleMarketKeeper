@@ -29,11 +29,19 @@ public class CDbManager extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String sql="CREATE TABLE IF NOT EXISTS tCollect (";
+        String sql="CREATE TABLE IF NOT EXISTS tCollectBusiness (";
         sql+=" _id INTEGER PRIMARY KEY ,";
         sql+=" fId TEXT ,";
         sql+=" fFBID TEXT ,";
-        sql+=" fBusiness TEXT ,";
+        sql+=" fBusinessID INTEGER ,";
+        sql+=" fBusiness TEXT)";
+        db.execSQL(sql);
+
+        sql="CREATE TABLE IF NOT EXISTS tCollectStores (";
+        sql+=" _id INTEGER PRIMARY KEY ,";
+        sql+=" fId TEXT ,";
+        sql+=" fFBID TEXT ,";
+        sql+=" fStoresID INTEGER ,";
         sql+=" fStores TEXT)";
         db.execSQL(sql);
 
