@@ -236,25 +236,29 @@ public class Tab_Collect extends Fragment {
                                                 ConnectivityManager conManager = (ConnectivityManager) getActivity().getSystemService(getActivity().CONNECTIVITY_SERVICE);//先取得此service
                                                 NetworkInfo networInfo = conManager.getActiveNetworkInfo();       //在取得相關資訊
 
-                                                if (networInfo == null || !networInfo.isAvailable()){ //判斷是否有網路
+                                                if (networInfo == null || !networInfo.isAvailable()) { //判斷是否有網路
                                                     //沒網路則刪除失敗
                                                     new AlertDialog.Builder(getActivity())
                                                             .setMessage("刪除失敗,偵測不到網路,請檢查您的網路狀態")
                                                             .show();
 
-                                                }
-                                                else{
+                                                } else {
                                                     //有網路刪除成功
                                                     business.remove(childPosition);
                                                     expListView.setAdapter(listAdapter);
+                                                    /*
                                                     Cursor data = (new CDbManager(getActivity())).QueryBySql("SELECT fBusinessID FROM tCollectBusiness where fid = " + childPosition);
                                                     data.moveToFirst();
-                                                    int BusinessIDdata = data.getInt(0);
+                                                    int BusinessIDdata = data.getInt(1);
                                                     (new CDbManager(getActivity())).Delete("tCollectBusiness", childPosition);
-
+                                                    */
                                                 }
 
+                                            }else{
+                                                business.remove(childPosition);
+                                                expListView.setAdapter(listAdapter);
                                             }
+                                            break;
 
                                         case 1:
                                             //有登入FB
@@ -263,27 +267,30 @@ public class Tab_Collect extends Fragment {
                                                 ConnectivityManager conManager = (ConnectivityManager) getActivity().getSystemService(getActivity().CONNECTIVITY_SERVICE);//先取得此service
                                                 NetworkInfo networInfo = conManager.getActiveNetworkInfo();       //在取得相關資訊
 
-                                                if (networInfo == null || !networInfo.isAvailable()){ //判斷是否有網路
+                                                if (networInfo == null || !networInfo.isAvailable()) { //判斷是否有網路
                                                     //沒網路則刪除失敗
                                                     new AlertDialog.Builder(getActivity())
                                                             .setMessage("刪除失敗,偵測不到網路,請檢查您的網路狀態")
                                                             .show();
 
-                                                }
-                                                else{
+                                                } else {
                                                     //有網路刪除成功
                                                     stores.remove(childPosition);
                                                     expListView.setAdapter(listAdapter);
+                                                    /*
                                                     Cursor data = (new CDbManager(getActivity())).QueryBySql("SELECT fStoresID FROM tCollectBusiness where fid = " + childPosition);
                                                     data.moveToFirst();
                                                     int BusinessIDdata = data.getInt(0);
-
                                                     (new CDbManager(getActivity())).Delete("tCollectStores", childPosition);
+                                                    */
 
                                                 }
+                                            } else {
+                                                stores.remove(childPosition);
+                                                expListView.setAdapter(listAdapter);
                                             }
 
-
+                                            break;
                                     }
 
                                 }
@@ -305,24 +312,26 @@ public class Tab_Collect extends Fragment {
     }
 
 
-
-
     //查詢APP HashKey
     private void HashKey() {
         PackageInfo info;
-        try{
+        try {
             info = getActivity().getPackageManager().getPackageInfo("samples.exoguru.materialtabs", PackageManager.GET_SIGNATURES);
-            for(Signature signature : info.signatures)
-            {      MessageDigest md;
-                md =MessageDigest.getInstance("SHA");
+            for (Signature signature : info.signatures) {
+                MessageDigest md;
+                md = MessageDigest.getInstance("SHA");
                 md.update(signature.toByteArray());
-                String KeyResult =new String(Base64.encode(md.digest(), 0));//String something = new String(Base64.encodeBytes(md.digest()));
+                String KeyResult = new String(Base64.encode(md.digest(), 0));//String something = new String(Base64.encodeBytes(md.digest()));
                 Log.e("hash key", KeyResult);
                 Toast.makeText(getActivity(), "My FB Key is \n" + KeyResult, Toast.LENGTH_LONG).show();
             }
-        }catch(PackageManager.NameNotFoundException e1){Log.e("name not found", e1.toString());
-        }catch(NoSuchAlgorithmException e){Log.e("no such an algorithm", e.toString());
-        }catch(Exception e){Log.e("exception", e.toString());}
+        } catch (PackageManager.NameNotFoundException e1) {
+            Log.e("name not found", e1.toString());
+        } catch (NoSuchAlgorithmException e) {
+            Log.e("no such an algorithm", e.toString());
+        } catch (Exception e) {
+            Log.e("exception", e.toString());
+        }
     }
 
     private void facebookInit() {
@@ -398,7 +407,7 @@ public class Tab_Collect extends Fragment {
             @Override
             public void onSuccess(LoginResult loginResult) {
 
-                Toast.makeText(getActivity(),"登入成功",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "登入成功", Toast.LENGTH_SHORT).show();
                 //accessToken之後或許還會用到 先存起來
                 AccessToken accessToken = loginResult.getAccessToken();
 
