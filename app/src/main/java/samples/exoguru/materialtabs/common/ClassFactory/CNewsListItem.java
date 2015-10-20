@@ -45,6 +45,8 @@ public class CNewsListItem {
                 tmp = new HashMap<>();
                 tmp.put("lblnewsTitle", jsonArray.getJSONObject(i).get("newsTitle").toString());
                 tmp.put("lblnewsType", jsonArray.getJSONObject(i).get("newsContent").toString());
+                tmp.put("lblnewsID", jsonArray.getJSONObject(i).get("id").toString());
+                Log.d("NewsLD_test", jsonArray.getJSONObject(i).get("id").toString());
                 item.add(tmp);
             }
         } catch (MalformedURLException e) {

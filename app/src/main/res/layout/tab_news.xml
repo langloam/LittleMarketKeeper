@@ -8,10 +8,8 @@
         android:id="@+id/newsListView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:dividerHeight="16dp"
+        android:dividerHeight="0dp"
         android:divider="@android:color/transparent"
-        android:layout_marginLeft="@dimen/activity_horizontal_margin"
-        android:layout_marginRight="@dimen/activity_horizontal_margin"
         android:overScrollMode="always">
 
 

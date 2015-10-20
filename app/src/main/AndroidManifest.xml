@@ -53,6 +53,13 @@
             android:theme="@style/Theme.Contact"
             />
 
+        <activity
+            android:name=".common.Activities.NewsPageActivity"
+            android:label="@string/title_activity_news_page"
+            android:screenOrientation="portrait"
+            >
+        </activity>
+
 
     </application>
 

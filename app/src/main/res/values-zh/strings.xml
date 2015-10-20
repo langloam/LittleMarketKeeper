@@ -2,4 +2,7 @@
 <resources>
     <string name="app_name">PrjApp</string>
     <string name="news_tab_title">新聞</string>
+    <string name="menu_QRcode">掃描QRcode</string>
+    <string name="menu_Settings">設定</string>
+    <string name="title_activity_news_page">新聞</string>
 </resources>

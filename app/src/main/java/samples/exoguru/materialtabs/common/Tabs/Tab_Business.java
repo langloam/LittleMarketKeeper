@@ -7,11 +7,13 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.SearchView;
 
@@ -25,6 +27,7 @@ public class Tab_Business extends Fragment {
 
     DrawerLayout searchNavLayout;
     NavigationView searchNavList;
+    Button btnSearchOpt;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -37,7 +40,19 @@ public class Tab_Business extends Fragment {
         super.onActivityCreated(savedInstanceState);
         searchNavLayout = (DrawerLayout)this.getActivity().findViewById(R.id.SearchNavDrawerLayout);
         searchNavList = (NavigationView)this.getActivity().findViewById(R.id.SearchNavDrawer);
+        btnSearchOpt = (Button)this.getActivity().findViewById(R.id.btnSearchOpt);
         searchNavList.setNavigationItemSelectedListener(new DrawerItemCheckListener());
+
+        searchNavLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+
+
+
+        btnSearchOpt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                searchNavLayout.openDrawer(searchNavList);
+            }
+        });
 
         FragmentManager frgMgr = getFragmentManager();
         Fragment frg = new SearchMarketFragment();

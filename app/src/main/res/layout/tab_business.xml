@@ -1,21 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.DrawerLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/SearchNavDrawerLayout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:id="@+id/SearchNavDrawerLayout">
+    android:layout_height="match_parent">
 
-    <FrameLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/SearchContentFrame" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <FrameLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/tabsScrollColor">
+
+            <Button
+                android:id="@+id/btnSearchOpt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:layout_marginStart="@dimen/activity_horizontal_margin"
+                android:background="@android:color/transparent"
+                android:drawableLeft="@drawable/navicon"
+                android:drawableStart="@drawable/navicon"
+                android:text="搜尋選項"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textColor="@color/abc_primary_text_material_light" />
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end|center"
+                android:layout_marginRight="@dimen/activity_horizontal_margin"
+                android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                android:background="@android:color/transparent"
+                android:src="@drawable/ic_sync"/>
+
+        </FrameLayout>
+
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:background="@android:color/background_dark" />
+
+        <FrameLayout
+            android:id="@+id/SearchContentFrame"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        </FrameLayout>
+
+    </LinearLayout>
 
     <android.support.design.widget.NavigationView
+        android:id="@+id/SearchNavDrawer"
         android:layout_width="240dp"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:id="@+id/SearchNavDrawer"
         app:menu="@menu/search_drawer" />
 
 </android.support.v4.widget.DrawerLayout>

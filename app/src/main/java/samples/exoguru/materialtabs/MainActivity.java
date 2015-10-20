@@ -2,6 +2,7 @@ package samples.exoguru.materialtabs;
 
 import android.app.AlertDialog;
 import android.content.ContentValues;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
@@ -106,7 +107,12 @@ public class MainActivity extends AppCompatActivity {
         if (networInfo == null || !networInfo.isAvailable()){ //判斷是否有網路
 
             new AlertDialog.Builder(MainActivity.this)
-                    .setMessage("偵測不到網路,請檢查您的網路狀態")
+                    .setMessage("請檢查您的網路狀態").setTitle("未連結網路").setNegativeButton("確定", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+
+                }
+            })
                     .show();
 
         }

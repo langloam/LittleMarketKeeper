@@ -38,11 +38,6 @@
                 android:textColor="@color/secondary_text_default_material_light" />
 
         </LinearLayout>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:visibility="invisible"
-            android:text="ID"/>
 
     </LinearLayout>
 </LinearLayout>
