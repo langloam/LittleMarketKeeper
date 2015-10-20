@@ -34,7 +34,7 @@ public class CDbManager extends SQLiteOpenHelper {
         sql+=" fId TEXT ,";
         sql+=" fFBID TEXT ,";
         sql+=" fBusinessID INTEGER ,";
-        sql+=" fBusiness TEXT)";
+        sql+=" fBusinessName TEXT)";
         db.execSQL(sql);
 
         sql="CREATE TABLE IF NOT EXISTS tCollectStores (";
@@ -42,7 +42,7 @@ public class CDbManager extends SQLiteOpenHelper {
         sql+=" fId TEXT ,";
         sql+=" fFBID TEXT ,";
         sql+=" fStoresID INTEGER ,";
-        sql+=" fStores TEXT)";
+        sql+=" fStoresName TEXT)";
         db.execSQL(sql);
 
         sql="CREATE TABLE IF NOT EXISTS tMarket (";
@@ -104,6 +104,7 @@ public class CDbManager extends SQLiteOpenHelper {
     public Cursor QueryBySql(String sql){
         return getReadableDatabase().rawQuery(sql,null);
     }
+
     public void Update(String tableName,ContentValues data,int pk){
         getWritableDatabase().update(tableName,data,"_id="+String.valueOf(pk),null);
     }
