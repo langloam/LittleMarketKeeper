@@ -3,6 +3,7 @@ package samples.exoguru.materialtabs.common.Activities;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.Image;
+import android.os.AsyncTask;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -56,28 +57,21 @@ public class NewsPageActivity extends AppCompatActivity {
             JSONArray jsonArray = new JSONArray(r.readLine());
 
             for (int i = 0; i < jsonArray.length(); i++) {
-                if(String.valueOf(jsonArray.getJSONObject(i).getInt("id")).equals(NewsID)){
+                if (String.valueOf(jsonArray.getJSONObject(i).getInt("id")).equals(NewsID)) {
                     NewsTitle.setText(jsonArray.getJSONObject(i).getString("newsTitle"));
                     Log.d("Debug_News", NewsTitle.getText().toString());
+
+                    //將 JSON DateTime 轉換成時間
                     String dateData = jsonArray.getJSONObject(i).getString("builddate");
-                    long MillionSecDate = Long.valueOf(dateData.replace("/Date(","").replace(")/",""));
+                    long MillionSecDate = Long.valueOf(dateData.replace("/Date(", "").replace(")/", ""));
                     Calendar calendar = Calendar.getInstance();
                     calendar.setTimeInMillis(MillionSecDate);
-                    NewsBuildDate.setText("發布日期："+calendar.getTime().toString());
-                    NewsType.setText("新聞分類："+jsonArray.getJSONObject(i).getString("newsType"));
 
-                    URL imgURL = new URL("http://mylittlemarkethome.azurewebsites.net/"+jsonArray.getJSONObject(i).getString("imgurl"));
-                    URLConnection imgConn = imgURL.openConnection();
-                    HttpURLConnection httpConn = (HttpURLConnection)imgConn;
-                    httpConn.setRequestMethod("GET");
-                    httpConn.connect();
-                    if (httpConn.getResponseCode() == HttpURLConnection.HTTP_OK) {
-                        InputStream inputStream = httpConn.getInputStream();
+                    NewsBuildDate.setText("發布日期：" + calendar.getTime().toString());
+                    NewsType.setText("新聞分類：" + jsonArray.getJSONObject(i).getString("newsType"));
 
-                        Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
-                        inputStream.close();
-                        NewsImg.setImageBitmap(bitmap);
-                    }
+                    URL imgURL = new URL("http://mylittlemarkethome.azurewebsites.net/" + jsonArray.getJSONObject(i).getString("imgurl"));
+                    new LoadImage().execute(imgURL);    //調用非同步 Task 來載入圖片
 
                     NewsContent.setText(jsonArray.getJSONObject(i).getString("newsContent"));
                 }
@@ -114,11 +108,46 @@ public class NewsPageActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    //元件初始化
     private void InitialComponent() {
         NewsTitle = (TextView) findViewById(R.id.NewsTitle);
         NewsBuildDate = (TextView) findViewById(R.id.NewsBuildDate);
-        NewsType = (TextView)findViewById(R.id.NewsType);
+        NewsType = (TextView) findViewById(R.id.NewsType);
         NewsContent = (TextView) findViewById(R.id.NewsContent);
         NewsImg = (ImageView) findViewById(R.id.NewsImg);
+    }
+
+    //非同步 Task 載入圖片，繼承自 AsyncTask
+    private class LoadImage extends AsyncTask<URL, Void, Bitmap> {
+        //覆寫 doInBackground() *必須
+        @Override
+        protected Bitmap doInBackground(URL... ImgUrls) {
+            int count = ImgUrls.length;
+            Bitmap bitmap = null;
+            try {
+                for (int i = 0; i < count; i++) {
+                    URLConnection imgConn = ImgUrls[i].openConnection();
+                    HttpURLConnection httpConn = (HttpURLConnection) imgConn;
+                    httpConn.setRequestMethod("GET");
+                    httpConn.connect();
+                    if (httpConn.getResponseCode() == HttpURLConnection.HTTP_OK) {
+                        InputStream inputStream = httpConn.getInputStream();
+
+                        bitmap = BitmapFactory.decodeStream(inputStream);
+                        inputStream.close();
+                    }
+                }
+            } catch (Exception e) {
+                Log.d("URLERROR", e.getMessage());
+                e.printStackTrace();
+            }
+            return bitmap;
+        }
+
+        //覆寫 onPostExecute()，Task 完成後將 NewsImg 內容代換成已載入的圖片
+        @Override
+        protected void onPostExecute(Bitmap bitmap) {
+            NewsImg.setImageBitmap(bitmap);
+        }
     }
 }

@@ -2,6 +2,7 @@ package samples.exoguru.materialtabs.common.Tabs;
 
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.v4.app.Fragment;
@@ -43,17 +44,17 @@ public class Tab_News extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        SimpleAdapter ItemAdapter = new SimpleAdapter(this.getContext(), CNewsListItem.getItem(),R.layout.news_list_item, new String[] {"lblnewsTitle", "lblnewsType"}, new int[] {R.id.lblnewsTitle, R.id.lblnewsType});
+        SimpleAdapter ItemAdapter = new SimpleAdapter(this.getContext(), CNewsListItem.getItem(), R.layout.news_list_item, new String[]{"lblnewsTitle", "lblnewsType"}, new int[]{R.id.lblnewsTitle, R.id.lblnewsType});
 
-        ListView newsList = (ListView)this.getActivity().findViewById(R.id.newsListView);
+        ListView newsList = (ListView) this.getActivity().findViewById(R.id.newsListView);
         newsList.setAdapter(ItemAdapter);
 
         newsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                ListView list = (ListView)parent;
-                HashMap<String , Object> map = (HashMap<String, Object>)list.getItemAtPosition(position);
-                CharSequence NewsID = (CharSequence)map.get("lblnewsID");
+                ListView list = (ListView) parent;
+                HashMap<String, Object> map = (HashMap<String, Object>) list.getItemAtPosition(position);
+                CharSequence NewsID = (CharSequence) map.get("lblnewsID");
 
                 Intent intent = new Intent();
                 Bundle bundle = new Bundle();
@@ -72,10 +73,9 @@ public class Tab_News extends Fragment {
                              Bundle savedInstanceState) {
 
 
-
         // Inflate the layout for this fragment
         layout = inflater.inflate(R.layout.tab_news, container, false);
-        return  layout;
+        return layout;
     }
 
 
