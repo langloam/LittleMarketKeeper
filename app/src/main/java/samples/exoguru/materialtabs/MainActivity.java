@@ -4,11 +4,13 @@ import android.app.AlertDialog;
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.StrictMode;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
@@ -23,6 +25,7 @@ import android.widget.Toast;
 import com.facebook.FacebookSdk;
 
 import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -38,6 +41,7 @@ import samples.exoguru.materialtabs.DB.CDbManager;
 import samples.exoguru.materialtabs.common.Adapter.ViewPagerAdapter;
 import samples.exoguru.materialtabs.common.Menu.Menu_QRcode;
 import samples.exoguru.materialtabs.common.Menu.Menu_Settings;
+import samples.exoguru.materialtabs.common.Tabs.Tab_Collect;
 import samples.exoguru.materialtabs.common.view.SlidingTabLayout;
 
 /**
@@ -110,31 +114,47 @@ public class MainActivity extends AppCompatActivity {
         if (networInfo == null || !networInfo.isAvailable()){ //判斷是否有網路
 
         } else {
+            if(Tab_Collect.isFBloggedIn()){
+                SharedPreferences sharedPreferences=getSharedPreferences("FBID", 0);
+                String FBID=sharedPreferences.getString("FBID", "No Data");
+                Log.d("FB", FBID);
 
-            Cursor table = (new CDbManager(this)).QueryBySql("SELECT * FROM tCollectBusiness");
-            if(table.getCount()>0){
-                String datas;
-                table.moveToFirst();
+                Cursor table = (new CDbManager(this)).QueryBySql("SELECT * FROM tCollectBusiness");
+                if(table.getCount()>0){
+                    String datasString = null;
+                    table.moveToFirst();
+                    /*
+                    datasString = "";
+                    JSONArray testj;
+                    for(int i=0;i<table.getCount();i++){
+                        JSONObject JO = new JSONObject(){};
+                        datasString += "fid"+table.getString(1)+","+table.getString(2)+",";
+                        table.moveToNext();
+                    }
+                    testj
+
+                    /*
+                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(""+));
+                    startActivity(intent);
+                    */
+                }
+
                 /*
-                for(int i=0;i<datas.length;i++){
-                    datas[i]=table.getString(1)+"\r\n"+table.getString(2);
-                    table.moveToNext();
+                table = (new CDbManager(this)).QueryBySql("SELECT * FROM tCollectStores");
+                if(table.getCount()>0){
+                    String[] datas=new String[table.getCount()];
+                    table.moveToFirst();
+
+                    for(int i=0;i<datas.length;i++){
+                        datas[i]=table.getString(1)+"\r\n"+table.getString(2);
+                        table.moveToNext();
+                    }
                 }
                 */
 
-            }
-
-            table = (new CDbManager(this)).QueryBySql("SELECT * FROM tCollectStores");
-            if(table.getCount()>0){
-                String[] datas=new String[table.getCount()];
-                table.moveToFirst();
-
-                for(int i=0;i<datas.length;i++){
-                    datas[i]=table.getString(1)+"\r\n"+table.getString(2);
-                    table.moveToNext();
-                }
 
             }
+
         }
     }
 

@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
@@ -27,11 +28,9 @@ import android.widget.ExpandableListView.OnChildClickListener;
 import android.widget.ExpandableListView.OnGroupClickListener;
 import android.widget.ExpandableListView.OnGroupCollapseListener;
 import android.widget.ExpandableListView.OnGroupExpandListener;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import samples.exoguru.materialtabs.DB.CDbManager;
-import samples.exoguru.materialtabs.MainActivity;
 import samples.exoguru.materialtabs.R;
 
 import com.facebook.AccessToken;
@@ -62,7 +61,7 @@ import java.util.List;
 
 public class Tab_Collect extends Fragment {
 
-    String FBID;
+    String FBID = null;
 
     CallbackManager callbackManager;
 
@@ -422,6 +421,7 @@ public class Tab_Collect extends Fragment {
                 //accessToken之後或許還會用到 先存起來
                 AccessToken accessToken = loginResult.getAccessToken();
 
+
                 //send request and call graph api
                 GraphRequest request = GraphRequest.newMeRequest(accessToken, new GraphRequest.GraphJSONObjectCallback() {
 
@@ -436,6 +436,9 @@ public class Tab_Collect extends Fragment {
                         Log.d("FB", object.optString("link"));
                         Log.d("FB", object.optString("id"));
                         FBID = object.optString("id");
+
+                        SharedPreferences sharedPreferences=getActivity().getSharedPreferences("FBID", 0);
+                        sharedPreferences.edit().putString("FBID",object.optString("id")).commit();
 
                         Toast.makeText(getActivity(), "資料讀取中", Toast.LENGTH_LONG).show();
 
@@ -494,8 +497,13 @@ public class Tab_Collect extends Fragment {
                             e.printStackTrace();
                         }
 
-                        NoBusinessCollect(business);
-                        NoStoresCollect(stores);
+
+                        //NoBusinessCollect(business);
+                        //NoStoresCollect(stores);
+                        BusinessCollectDelete(business);
+                        StoresCollectDelete(stores);
+                        expListView.setAdapter(listAdapter);
+
 
                         //查詢商圈
                         Cursor table = (new CDbManager(getActivity())).QueryBySql("SELECT * FROM tCollectBusiness");
@@ -526,6 +534,7 @@ public class Tab_Collect extends Fragment {
                         }else {
                             stores.add("尚未收藏店家");
                         }
+
 
                         expListView.setAdapter(listAdapter);
                         Log.d("FB", "收藏更新完成");
@@ -558,7 +567,7 @@ public class Tab_Collect extends Fragment {
     }
 
 
-    private boolean isFBloggedIn() {
+    public static boolean isFBloggedIn() {
         //check login
         return (AccessToken.getCurrentAccessToken()) != null;
     }
@@ -602,6 +611,22 @@ public class Tab_Collect extends Fragment {
 
     private void NoStoresCollect(List<String> stores){
         stores.remove(0);
+    }
+
+    private void BusinessCollectDelete(List<String> business){
+        for (int i = 0; i < business.size(); i++){
+            business.remove(i);
+            Log.d("FB", "BusinessCollectDelete");
+            Log.d("FB", "size"+business.size());
+        }
+
+
+    }
+
+    private void StoresCollectDelete(List<String> stores){
+        for (int i = 0; i < stores.size(); i++){
+            stores.remove(i);
+        }
     }
 
 
