@@ -1,6 +1,7 @@
 package samples.exoguru.materialtabs.common.Tabs;
 
 import android.app.AlertDialog;
+import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
@@ -10,6 +11,7 @@ import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Base64;
@@ -41,8 +43,16 @@ import com.facebook.GraphResponse;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
@@ -52,8 +62,9 @@ import java.util.List;
 
 public class Tab_Collect extends Fragment {
 
-    CallbackManager callbackManager;
+    String FBID;
 
+    CallbackManager callbackManager;
 
     ExpandableListAdapter listAdapter;
     ExpandableListView expListView;
@@ -424,6 +435,100 @@ public class Tab_Collect extends Fragment {
                         Log.d("FB", object.optString("name"));
                         Log.d("FB", object.optString("link"));
                         Log.d("FB", object.optString("id"));
+                        FBID = object.optString("id");
+
+                        Toast.makeText(getActivity(), "資料讀取中", Toast.LENGTH_LONG).show();
+
+                        CDbManager db = new CDbManager(getActivity());
+                        db.Delete("tShop");
+                        Log.d("appCREATE", "Shop_del");
+
+                        StrictMode.ThreadPolicy l_policy =  new StrictMode.ThreadPolicy.Builder().permitAll().build();
+                        StrictMode.setThreadPolicy(l_policy);
+
+                        try {
+
+                            URL url=new URL("http://mylittlemarket.azurewebsites.net/FindFBMarket.aspx?fbid=" + FBID);
+                            URLConnection conn=url.openConnection();
+                            InputStream streamIn=conn.getInputStream();
+
+                            BufferedReader r = new BufferedReader(new InputStreamReader(streamIn));
+                            JSONArray jsonArray= new JSONArray(r.readLine());
+                            for(int i=0; i<jsonArray.length(); i++) {
+
+                                ContentValues row =new ContentValues();
+                                row.put("fId",Integer.valueOf(jsonArray.getJSONObject(i).get("id").toString()));
+                                row.put("fFBID",jsonArray.getJSONObject(i).get("FBid").toString());
+                                row.put("fBusinessID",jsonArray.getJSONObject(i).get("marketid").toString());
+                                row.put("fBusinessName",jsonArray.getJSONObject(i).get("marketname").toString());
+                                db = new CDbManager(getActivity());
+                                db.Insert("tCollectBusiness", row);
+
+                            }
+
+                            url=new URL("http://mylittlemarket.azurewebsites.net/FindFBShop.aspx?fbid=" + FBID);
+                            conn=url.openConnection();
+                            streamIn=conn.getInputStream();
+
+                            r = new BufferedReader(new InputStreamReader(streamIn));
+                            jsonArray= new JSONArray(r.readLine());
+                            for(int i=0; i<jsonArray.length(); i++) {
+
+                                ContentValues row =new ContentValues();
+                                row.put("fId",Integer.valueOf(jsonArray.getJSONObject(i).get("id").toString()));
+                                row.put("fFBID",jsonArray.getJSONObject(i).get("FBid").toString());
+                                row.put("fStoresID",jsonArray.getJSONObject(i).get("shopid").toString());
+                                row.put("fStoresName",jsonArray.getJSONObject(i).get("shopname").toString());
+                                db = new CDbManager(getActivity());
+                                db.Insert("tCollectStores", row);
+
+                            }
+                        } catch (MalformedURLException e) {
+                            Log.d("URLERROR", e.getMessage());
+                            e.printStackTrace();
+                        }catch (IOException e) {
+                            Log.d("URLERROR",e.getMessage());
+                            e.printStackTrace();
+                        }catch (Exception e) {
+                            Log.d("URLERROR",e.getMessage());
+                            e.printStackTrace();
+                        }
+
+                        NoBusinessCollect(business);
+                        NoStoresCollect(stores);
+
+                        //查詢商圈
+                        Cursor table = (new CDbManager(getActivity())).QueryBySql("SELECT * FROM tCollectBusiness");
+                        if(table.getCount()>0){
+                            String[] datas=new String[table.getCount()];
+                            table.moveToFirst();
+
+                            for(int i=0;i<datas.length;i++){
+                                business.add(table.getString(4));
+                                table.moveToNext();
+                            }
+
+                        }else {
+                            business.add("尚未收藏商圈");
+                        }
+
+                        //查詢店家
+                        table = (new CDbManager(getActivity())).QueryBySql("SELECT * FROM tCollectStores");
+                        if(table.getCount()>0){
+                            String[] datas=new String[table.getCount()];
+                            table.moveToFirst();
+
+                            for(int i=0;i<datas.length;i++){
+                                stores.add(table.getString(4));
+                                table.moveToNext();
+                            }
+
+                        }else {
+                            stores.add("尚未收藏店家");
+                        }
+
+                        expListView.setAdapter(listAdapter);
+                        Log.d("FB", "收藏更新完成");
 
                     }
                 });
@@ -488,6 +593,17 @@ public class Tab_Collect extends Fragment {
     });
 
     */
+
+
+    //新增商圈或店家時將原本的"尚未收藏"文字刪除
+    private void NoBusinessCollect(List<String> business){
+        business.remove(0);
+    }
+
+    private void NoStoresCollect(List<String> stores){
+        stores.remove(0);
+    }
+
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {

@@ -99,6 +99,45 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        ConnectivityManager conManager = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);//先取得此service
+
+        NetworkInfo networInfo = conManager.getActiveNetworkInfo();       //在取得相關資訊
+
+        if (networInfo == null || !networInfo.isAvailable()){ //判斷是否有網路
+
+        } else {
+
+            Cursor table = (new CDbManager(this)).QueryBySql("SELECT * FROM tCollectBusiness");
+            if(table.getCount()>0){
+                String datas;
+                table.moveToFirst();
+                /*
+                for(int i=0;i<datas.length;i++){
+                    datas[i]=table.getString(1)+"\r\n"+table.getString(2);
+                    table.moveToNext();
+                }
+                */
+
+            }
+
+            table = (new CDbManager(this)).QueryBySql("SELECT * FROM tCollectStores");
+            if(table.getCount()>0){
+                String[] datas=new String[table.getCount()];
+                table.moveToFirst();
+
+                for(int i=0;i<datas.length;i++){
+                    datas[i]=table.getString(1)+"\r\n"+table.getString(2);
+                    table.moveToNext();
+                }
+
+            }
+        }
+    }
+
     public void  checkNetwork(){
         ConnectivityManager conManager = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);//先取得此service
 
@@ -122,10 +161,10 @@ public class MainActivity extends AppCompatActivity {
             //店家資料初始化
             ShopDataInit();
             //Log.d("appCREATE", "資料庫check");
+
+
         }
     }
-
-
 
     private void MarketDataInit() {
         CDbManager db = new CDbManager(MainActivity.this);
@@ -292,5 +331,7 @@ public class MainActivity extends AppCompatActivity {
         return pm.queryIntentActivities(intent,
                 PackageManager.COMPONENT_ENABLED_STATE_DEFAULT);
     }
+
+
 
 }
