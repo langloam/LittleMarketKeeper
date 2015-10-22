@@ -27,27 +27,32 @@
                 >
             </Gallery>
 
-            <TextView
-                android:background="#FFFFFF"
-                android:layout_marginBottom="10dp"
-                android:text="廣告1"
-                android:height="150dp"
+            <ImageButton
+                android:background="@color/White"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-            <TextView
-                android:background="#FFFFFF"
+                android:layout_height="match_parent"
                 android:layout_marginBottom="10dp"
-                android:text="廣告2"
                 android:height="150dp"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-            <TextView
-                android:background="#FFFFFF"
+                android:src="@drawable/img_coupon_03"
+                />
+            <ImageButton
+                android:background="@color/White"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_marginBottom="10dp"
-                android:text="廣告3"
                 android:height="150dp"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:src="@drawable/img_coupon_08"
+                />
+            <ImageButton
+                android:background="@color/White"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="10dp"
+                android:height="150dp"
+                android:src="@drawable/img_coupon_07"
+                />
+
+
         </LinearLayout>
 
 

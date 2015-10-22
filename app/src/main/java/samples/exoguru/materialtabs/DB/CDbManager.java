@@ -34,7 +34,11 @@ public class CDbManager extends SQLiteOpenHelper {
         sql+=" fId TEXT ,";
         sql+=" fFBID TEXT ,";
         sql+=" fBusinessID INTEGER ,";
-        sql+=" fBusinessName TEXT)";
+        sql+=" fBusinessName TEXT ,";
+        sql+=" fImg TEXT ,";
+        sql+=" fInfo TEXT ,";
+        sql+=" fArea TEXT ,";
+        sql+=" fBusinessContent TEXT)";
         db.execSQL(sql);
 
         sql="CREATE TABLE IF NOT EXISTS tCollectStores (";
@@ -42,7 +46,11 @@ public class CDbManager extends SQLiteOpenHelper {
         sql+=" fId TEXT ,";
         sql+=" fFBID TEXT ,";
         sql+=" fStoresID INTEGER ,";
-        sql+=" fStoresName TEXT)";
+        sql+=" fStoresName TEXT ,";
+        sql+=" fImg TEXT ,";
+        sql+=" fInfo TEXT ,";
+        sql+=" fArea TEXT ,";
+        sql+=" fStoresContent TEXT)";
         db.execSQL(sql);
 
         sql="CREATE TABLE IF NOT EXISTS tMarket (";
