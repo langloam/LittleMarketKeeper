@@ -23,6 +23,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 import samples.exoguru.materialtabs.R;
@@ -67,7 +68,7 @@ public class NewsPageActivity extends AppCompatActivity {
                     Calendar calendar = Calendar.getInstance();
                     calendar.setTimeInMillis(MillionSecDate);
 
-                    NewsBuildDate.setText("發布日期：" + calendar.getTime().toString());
+                    NewsBuildDate.setText("發布日期：" + new SimpleDateFormat("yyyy/MM/dd").format(calendar.getTime()));
                     NewsType.setText("新聞分類：" + jsonArray.getJSONObject(i).getString("newsType"));
 
                     URL imgURL = new URL("http://mylittlemarkethome.azurewebsites.net/" + jsonArray.getJSONObject(i).getString("imgurl"));
