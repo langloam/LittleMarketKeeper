@@ -28,6 +28,7 @@
             </Gallery>
 
             <ImageButton
+                android:id="@+id/imgbtn1"
                 android:background="@color/White"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -36,20 +37,13 @@
                 android:src="@drawable/img_coupon_03"
                 />
             <ImageButton
+                android:id="@+id/imgbtn2"
                 android:background="@color/White"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_marginBottom="10dp"
                 android:height="150dp"
                 android:src="@drawable/img_coupon_08"
-                />
-            <ImageButton
-                android:background="@color/White"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginBottom="10dp"
-                android:height="150dp"
-                android:src="@drawable/img_coupon_07"
                 />
 
 

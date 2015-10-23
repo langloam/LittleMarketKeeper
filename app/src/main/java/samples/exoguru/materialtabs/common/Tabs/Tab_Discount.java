@@ -12,12 +12,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Gallery;
+import android.widget.ImageButton;
 
 import java.util.Timer;
 import java.util.TimerTask;
 
 import samples.exoguru.materialtabs.R;
 import samples.exoguru.materialtabs.common.Adapter.ImageAdapter;
+import samples.exoguru.materialtabs.common.Demo.DemoCoupon1;
+import samples.exoguru.materialtabs.common.Demo.DemoCoupon2;
 
 /**
  * Created by Edwin on 15/02/2015.
@@ -59,7 +62,27 @@ public class Tab_Discount extends Fragment {
         //設定點擊圖片時觸發
         //mGallery.setOnItemClickListener(click);
 
+        imgbtn1 = (ImageButton) getView().findViewById(R.id.imgbtn1);
+        imgbtn1.setOnClickListener(imgbtn1_Click);
+        imgbtn2 = (ImageButton) getView().findViewById(R.id.imgbtn2);
+        imgbtn2.setOnClickListener(imgbtn2_Click);
     }
+
+
+    View.OnClickListener imgbtn1_Click = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+
+            startActivity((new Intent(getActivity(), DemoCoupon1.class)));
+        }
+    };
+
+    View.OnClickListener imgbtn2_Click = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            startActivity((new Intent(getActivity(), DemoCoupon2.class)));
+        }
+    };
 
     @Override
 //程式暫停時將自動輪播功能的時間計時清除.
@@ -128,6 +151,8 @@ public class Tab_Discount extends Fragment {
         }
     };
     */
+
+    ImageButton imgbtn1,imgbtn2;
 
 
 }
