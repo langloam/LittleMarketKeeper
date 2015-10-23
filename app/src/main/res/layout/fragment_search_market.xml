@@ -6,6 +6,7 @@
     android:layout_marginLeft="@dimen/activity_horizontal_margin"
     android:layout_marginRight="@dimen/activity_horizontal_margin"
     android:layout_marginTop="@dimen/activity_vertical_margin"
+    android:fillViewport="true"
     android:orientation="vertical"
     tools:context="samples.exoguru.materialtabs.common.Tabs.SearchTabFragments.SearchMarketFragment">
 
@@ -27,14 +28,16 @@
         android:orientation="horizontal">
 
         <Spinner
+            android:id="@+id/MarketTypeSelector"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="0.3"></Spinner>
+            android:layout_weight="0.35"></Spinner>
 
         <EditText
+            android:id="@+id/EditText_MarketKeyWord"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="0.7"
+            android:layout_weight="0.65"
             android:hint="請輸入關鍵字"
             android:inputType="text" />
     </LinearLayout>
@@ -43,21 +46,27 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
+
         <CheckBox
+            android:id="@+id/search_market_title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.25"
+            android:checked="true"
             android:text="標題"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            android:checked="true"/>
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
         <CheckBox
+            android:id="@+id/search_market_content"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.25"
+            android:checked="false"
             android:text="內文"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            android:checked="false"/>
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
         <Button
+            android:id="@+id/btn_market_start_search"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.5"
@@ -65,7 +74,32 @@
             android:drawableStart="@drawable/ic_btn_search"
             android:text="開始搜尋"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            android:textColor="@color/abc_primary_text_material_light"/>
+            android:textColor="@color/abc_primary_text_material_light" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="商圈列表"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            android:textColor="@color/abc_secondary_text_material_light" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="3dp"
+            android:background="@color/dim_foreground_material_light" />
+
+        <ListView
+            android:id="@+id/MarketList"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:overScrollMode="always"></ListView>
     </LinearLayout>
 
 </LinearLayout>

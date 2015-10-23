@@ -25,6 +25,7 @@
             android:name=".MainActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan"
             >
 
             <!--screenOrientation為固定畫面的方向-->
