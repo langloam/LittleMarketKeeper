@@ -24,7 +24,7 @@
             android:name=".MainActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden|adjustPan">
+            android:windowSoftInputMode="stateHidden|adjustPan" >
 
             <!-- screenOrientation為固定畫面的方向 -->
             <!-- 參數為 landscape為橫向 portrait為縱向 nosensor為關閉重力感應器 -->
@@ -55,16 +55,16 @@
         <activity
             android:name=".common.Demo.DemoCoupon1"
             android:label="@string/title_activity_demo_coupon1"
-            android:screenOrientation="portrait"
-            >
-
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name=".common.Demo.DemoCoupon2"
             android:label="@string/title_activity_demo_coupon2"
-            android:screenOrientation="portrait"
-            >
-
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name=".common.Activities.MarketInfoActivity"
+            android:label="@string/title_activity_market_info" >
         </activity>
     </application>
 
