@@ -24,13 +24,19 @@ import android.widget.Toast;
 
 import com.facebook.FacebookSdk;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
+import com.google.gson.Gson;
 
+import org.json.JSONArray;
+
+import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
@@ -40,6 +46,7 @@ import java.util.List;
 import java.util.Map;
 
 import samples.exoguru.materialtabs.DB.CDbManager;
+import samples.exoguru.materialtabs.JSON.CollectToJson;
 import samples.exoguru.materialtabs.common.Adapter.ViewPagerAdapter;
 import samples.exoguru.materialtabs.common.Menu.Menu_QRcode;
 import samples.exoguru.materialtabs.common.Menu.Menu_Settings;
@@ -68,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
 
         //檢查網路狀態
         checkNetwork();
-        
+
         // Set The Tabs Titles
         setTabsTitles();
 
@@ -109,7 +116,6 @@ public class MainActivity extends AppCompatActivity {
         super.onStop();
 
         ConnectivityManager conManager = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);//先取得此service
-
         NetworkInfo networInfo = conManager.getActiveNetworkInfo();       //在取得相關資訊
 
         if (networInfo == null || !networInfo.isAvailable()){ //判斷是否有網路
@@ -120,42 +126,140 @@ public class MainActivity extends AppCompatActivity {
                 String FBID=sharedPreferences.getString("FBID", "No Data");
                 Log.d("FB", FBID);
 
-                Cursor table = (new CDbManager(this)).QueryBySql("SELECT * FROM tCollectBusiness");
+
+                //收藏店家轉GSON上傳雲端
+                Log.d("JSON_UP", "開始上傳店家資料");
+                Cursor table = (new CDbManager(this)).QueryBySql("SELECT * FROM tCollectStores");
+                    if(table.getCount()>0){
+                        String datasString = null;
+                        table.moveToFirst();
+
+                        Gson gson = new Gson();
+                        List<CollectToJson> list = new ArrayList<CollectToJson>();
+                        for(int i=0;i<table.getCount();i++){
+                            CollectToJson collectToJson = new CollectToJson(
+                                    table.getString(2),//fFBID
+                                    String.valueOf(table.getInt(3)),//fBusinessID
+                                    table.getString(4),//fBusinessName
+                                    table.getString(5),//fImg
+                                    table.getString(6),//fInfo
+                                    table.getString(7),//fArea
+                                    table.getString(8) //fContent
+                            );
+                            list.add(collectToJson);
+
+
+
+                            table.moveToNext();
+                        }
+
+                        String collectToJson = gson.toJson(list);
+
+
+                    Log.d("JSON", collectToJson);
+                    URL url= null;
+                    HttpURLConnection conn = null;
+                    try {
+                        url = new URL("http://mylittlemarket.azurewebsites.net/UpdateFBShops.aspx");
+                        conn = (HttpURLConnection) url.openConnection();
+                        conn.setChunkedStreamingMode(0);
+                        conn.setDoInput(true);
+                        conn.setDoOutput(true);
+                        conn.setUseCaches(false);
+
+                        // 使用POST方法
+                        conn.setRequestMethod("POST");
+                        conn.setRequestProperty("Content-Type", "application/json");
+                        OutputStream os = conn.getOutputStream();
+                        os.write(collectToJson.getBytes());
+                        os.flush();
+                        os.close();
+
+
+                        BufferedReader r = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
+                        Log.d("URL_IN", r.readLine());
+                        r.close();
+
+                    } catch (MalformedURLException e) {
+                        Log.d("URLERROR", e.getMessage());
+                        e.printStackTrace();
+                    }catch (IOException e) {
+                        Log.d("URLERROR",e.getMessage());
+                        e.printStackTrace();
+                    }catch (Exception e) {
+                        Log.d("URLERROR",e.getMessage());
+                        e.printStackTrace();
+                    }
+                }
+
+
+
+
+
+                //收藏商圈轉GSON上傳雲端
+                Log.d("JSON_UP", "開始上傳商圈資料");
+                table = (new CDbManager(this)).QueryBySql("SELECT * FROM tCollectBusiness");
                 if(table.getCount()>0){
                     String datasString = null;
                     table.moveToFirst();
-                    /*
-                    datasString = "";
-                    JSONArray testj;
+
+                    Gson gson = new Gson();
+                    List<CollectToJson> list = new ArrayList<CollectToJson>();
                     for(int i=0;i<table.getCount();i++){
-                        JSONObject JO = new JSONObject(){};
-                        datasString += "fid"+table.getString(1)+","+table.getString(2)+",";
+                        CollectToJson collectToJson = new CollectToJson(
+                                table.getString(2),//fFBID
+                                String.valueOf(table.getInt(3)),//fBusinessID
+                                table.getString(4),//fBusinessName
+                                table.getString(5),//fImg
+                                table.getString(6),//fInfo
+                                table.getString(7),//fArea
+                                table.getString(8) //fContent
+                        );
+                        list.add(collectToJson);
+
+
+
                         table.moveToNext();
                     }
-                    testj
 
-                    /*
-                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(""+));
-                    startActivity(intent);
-                    */
-                }
+                    String collectToJson = gson.toJson(list);
 
-                /*
-                table = (new CDbManager(this)).QueryBySql("SELECT * FROM tCollectStores");
-                if(table.getCount()>0){
-                    String[] datas=new String[table.getCount()];
-                    table.moveToFirst();
 
-                    for(int i=0;i<datas.length;i++){
-                        datas[i]=table.getString(1)+"\r\n"+table.getString(2);
-                        table.moveToNext();
+                    Log.d("JSON", collectToJson);
+                    URL url= null;
+                    HttpURLConnection conn = null;
+                    try {
+                        url = new URL("http://mylittlemarket.azurewebsites.net/UpdateFBMarkets.aspx");
+                        conn = (HttpURLConnection) url.openConnection();
+                        conn.setChunkedStreamingMode(0);
+                        conn.setDoInput(true);
+                        conn.setDoOutput(true);
+                        conn.setUseCaches(false);
+
+                        // 使用POST方法
+                        conn.setRequestMethod("POST");
+                        conn.setRequestProperty("Content-Type", "application/json");
+                        OutputStream os = conn.getOutputStream();
+                        os.write(collectToJson.getBytes());
+                        os.flush();
+                        os.close();
+
+
+                        BufferedReader r = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
+                        Log.d("URL_IN", r.readLine());
+                        r.close();
+                    } catch (MalformedURLException e) {
+                        Log.d("URLERROR", e.getMessage());
+                        e.printStackTrace();
+                    }catch (IOException e) {
+                        Log.d("URLERROR",e.getMessage());
+                        e.printStackTrace();
+                    }catch (Exception e) {
+                        Log.d("URLERROR",e.getMessage());
+                        e.printStackTrace();
                     }
                 }
-                */
-
-
             }
-
         }
     }
 

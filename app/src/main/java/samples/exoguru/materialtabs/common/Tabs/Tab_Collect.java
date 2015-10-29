@@ -61,7 +61,8 @@ import java.util.List;
 
 public class Tab_Collect extends Fragment {
 
-    String FBID = null;
+    String FBID, ItemLongClick = null;
+
 
     CallbackManager callbackManager;
 
@@ -229,7 +230,8 @@ public class Tab_Collect extends Fragment {
                     final int groupPosition = ExpandableListView.getPackedPositionGroup(id);
                     final int childPosition = ExpandableListView.getPackedPositionChild(id);
 
-
+                    Log.d("GetListText",(parent.getItemAtPosition(position)).toString());
+                    ItemLongClick = (parent.getItemAtPosition(position)).toString();
                     AlertDialog.Builder delete_Stores_Business = new AlertDialog.Builder(getActivity());
 
                     delete_Stores_Business.setTitle("刪除").setMessage("確認刪除?")
@@ -240,66 +242,21 @@ public class Tab_Collect extends Fragment {
                                     switch (groupPosition) {
 
                                         case 0:
-                                            //有登入FB
-                                            if (isFBloggedIn()) {
-                                                //檢查網路
-                                                ConnectivityManager conManager = (ConnectivityManager) getActivity().getSystemService(getActivity().CONNECTIVITY_SERVICE);//先取得此service
-                                                NetworkInfo networInfo = conManager.getActiveNetworkInfo();       //在取得相關資訊
+                                            Cursor table = (new CDbManager(getActivity())).QueryBySql("SELECT * FROM tCollectBusiness where fBusinessName = " + ItemLongClick);
+                                            table.moveToFirst();
 
-                                                if (networInfo == null || !networInfo.isAvailable()) { //判斷是否有網路
-                                                    //沒網路則刪除失敗
-                                                    new AlertDialog.Builder(getActivity())
-                                                            .setMessage("刪除失敗,偵測不到網路,請檢查您的網路狀態")
-                                                            .show();
-
-                                                } else {
-                                                    //有網路刪除成功
-                                                    business.remove(childPosition);
-                                                    expListView.setAdapter(listAdapter);
-                                                    /*
-                                                    Cursor data = (new CDbManager(getActivity())).QueryBySql("SELECT fBusinessID FROM tCollectBusiness where fid = " + childPosition);
-                                                    data.moveToFirst();
-                                                    int BusinessIDdata = data.getInt(1);
-                                                    (new CDbManager(getActivity())).Delete("tCollectBusiness", childPosition);
-                                                    */
-                                                }
-
-                                            }else{
-                                                business.remove(childPosition);
-                                                expListView.setAdapter(listAdapter);
-                                            }
+                                            (new CDbManager(getActivity())).Delete("tCollectStores", table.getInt(0));
+                                            business.remove(childPosition);
+                                            expListView.setAdapter(listAdapter);
                                             break;
 
                                         case 1:
-                                            //有登入FB
-                                            if (isFBloggedIn()) {
-                                                //檢查網路
-                                                ConnectivityManager conManager = (ConnectivityManager) getActivity().getSystemService(getActivity().CONNECTIVITY_SERVICE);//先取得此service
-                                                NetworkInfo networInfo = conManager.getActiveNetworkInfo();       //在取得相關資訊
+                                            table = (new CDbManager(getActivity())).QueryBySql("SELECT * FROM tCollectStores where fStoresName = '" + ItemLongClick + "'");
+                                            table.moveToFirst();
 
-                                                if (networInfo == null || !networInfo.isAvailable()) { //判斷是否有網路
-                                                    //沒網路則刪除失敗
-                                                    new AlertDialog.Builder(getActivity())
-                                                            .setMessage("刪除失敗,偵測不到網路,請檢查您的網路狀態")
-                                                            .show();
-
-                                                } else {
-                                                    //有網路刪除成功
-                                                    stores.remove(childPosition);
-                                                    expListView.setAdapter(listAdapter);
-                                                    /*
-                                                    Cursor data = (new CDbManager(getActivity())).QueryBySql("SELECT fStoresID FROM tCollectBusiness where fid = " + childPosition);
-                                                    data.moveToFirst();
-                                                    int BusinessIDdata = data.getInt(0);
-                                                    (new CDbManager(getActivity())).Delete("tCollectStores", childPosition);
-                                                    */
-
-                                                }
-                                            } else {
-                                                stores.remove(childPosition);
-                                                expListView.setAdapter(listAdapter);
-                                            }
-
+                                            (new CDbManager(getActivity())).Delete("tCollectStores", table.getInt(0));
+                                            stores.remove(childPosition);
+                                            expListView.setAdapter(listAdapter);
                                             break;
                                     }
 
