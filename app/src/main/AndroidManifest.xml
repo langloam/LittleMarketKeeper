@@ -63,8 +63,9 @@
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name=".common.Activities.MarketActivity"
-            android:label="@string/title_activity_market" >
+            android:name=".common.Activities.MarketInfoActivity"
+            android:label="@string/title_activity_market"
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name=".common.Activities.ShopActivity"

@@ -11,7 +11,12 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ListAdapter;
+import android.widget.ListView;
+import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
 import java.io.InputStream;
@@ -20,7 +25,11 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import samples.exoguru.materialtabs.DB.CDbManager;
 import samples.exoguru.materialtabs.R;
@@ -30,9 +39,11 @@ public class MarketInfoActivity extends AppCompatActivity {
     CDbManager db;
     Cursor table;
     MarketData marketData;
+    List<Map<String, Object>> MappedStoreList = new ArrayList<>();
     Toolbar ActivityToolbar;
-    TextView lblType, lblDate, lblContent;
+    TextView lblType, lblDate, lblAddr, lblContent;
     ImageView picMarket;
+    ListView storeList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,8 +54,8 @@ public class MarketInfoActivity extends AppCompatActivity {
         setSupportActionBar(ActivityToolbar);
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_HOME_AS_UP | ActionBar.DISPLAY_SHOW_TITLE);
 
-        String sqlCmd = "SELECT fName, fType, fBegindate, fEnddate, fImg, fInfo, fId FROM tMarket " +
-                "WHERE fId='" + args.getCharSequence("MarketId")+"'";
+        String sqlCmd = "SELECT fName, fType, fBegindate, fEnddate, fImg, fInfo, fArea FROM tMarket " +
+                "WHERE fId='" + args.getCharSequence("MarketId") + "'";
         table = db.QueryBySql(sqlCmd);
         while (table.moveToNext()) {
             marketData.setId(args.getCharSequence("MarketId").toString());
@@ -54,11 +65,14 @@ public class MarketInfoActivity extends AppCompatActivity {
             marketData.setEndTime(table.getString(3));
             marketData.setImgUrl(table.getString(4));
             marketData.setInfo(table.getString(5));
+            marketData.setAddress(table.getString(6));
         }
+        table.close();
 
         getSupportActionBar().setTitle(marketData.getName());
         lblType.setText("商圈分類：" + marketData.getType());
         lblDate.setText("起訖日期：" + marketData.getBeginTime() + " 至 " + marketData.getEndTime());
+        lblAddr.setText("所在地址：" + marketData.getAddress());
         lblContent.setText(marketData.getInfo());
 
         try {
@@ -67,6 +81,36 @@ public class MarketInfoActivity extends AppCompatActivity {
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
+
+        //取得所屬店家的資料
+        sqlCmd = "SELECT tShop.fId, tShop.fName, tShop.fAddress FROM tShopBelong INNER JOIN tShop ON tShop.fId = tShopBelong.fShopid WHERE tShopBelong.fMarketid = '" + marketData.getId() + "'";
+        table = db.QueryBySql(sqlCmd);
+        while (table.moveToNext()) {
+            ShopDataFormat tmp = new ShopDataFormat();
+            tmp.setId(table.getString(0));
+            tmp.setName(table.getString(1));
+            Log.d("StoreNames", table.getString(1));
+            tmp.setAddress(table.getString(2));
+            MappedStoreList.add(tmp.getMapData());
+        }
+        table.close();
+
+        SimpleAdapter StoreListAdapter = new SimpleAdapter(this, MappedStoreList, R.layout.market_list_item, new String[]{"name", "address"}, new int[]{R.id.market_list_item_title, R.id.market_list_item_info});
+        storeList.setAdapter(StoreListAdapter);
+
+        //重設ListView的高度
+        ListAdapter listAdapter = storeList.getAdapter();
+
+        int totalHeight = 0;
+        for (int i = 0; i < listAdapter.getCount(); i++) {
+            View listItem = listAdapter.getView(i, null, storeList);
+            listItem.measure(0, 0);
+            totalHeight += listItem.getMeasuredHeight();
+        }
+
+        ViewGroup.LayoutParams params = storeList.getLayoutParams();
+        params.height = totalHeight + (storeList.getDividerHeight() * (listAdapter.getCount() - 1));
+        storeList.setLayoutParams(params);
     }
 
     @Override
@@ -88,11 +132,6 @@ public class MarketInfoActivity extends AppCompatActivity {
             return true;
         }
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -102,13 +141,16 @@ public class MarketInfoActivity extends AppCompatActivity {
         ActivityToolbar = (Toolbar) findViewById(R.id.MarketInfoTitleBar);
         lblType = (TextView) findViewById(R.id.MarketInfoType);
         lblDate = (TextView) findViewById(R.id.MarketInfoDate);
+        lblAddr = (TextView) findViewById(R.id.MarketInfoAddress);
         lblContent = (TextView) findViewById(R.id.MarketInfoContent);
-        picMarket = (ImageView)findViewById(R.id.MarketInfoImg);
+        picMarket = (ImageView) findViewById(R.id.MarketInfoImg);
+        storeList = (ListView) findViewById(R.id.MarketInfoStoreList);
     }
 
     private class MarketData {
         private String id, name, info, type, imgUrl;
         private String beginTime, endTime;
+        private String address;
 
         public String getId() {
             return id;
@@ -166,19 +208,44 @@ public class MarketInfoActivity extends AppCompatActivity {
             this.endTime = endTime;
         }
 
+        public String getAddress() {
+            return address;
+        }
+
+        public void setAddress(String address) {
+            this.address = address;
+        }
+
         private String ConvertDateFromJSONDate(String JSONDate) {
             long milliSec = Long.valueOf(JSONDate.replace("/Date(", "").replace(")/", ""));
             Calendar calendar = Calendar.getInstance();
             calendar.setTimeInMillis(milliSec);
             return new SimpleDateFormat("yyyy/MM/dd").format(calendar.getTime());
         }
-        /*
-        private static String ConvertDateFromJSONDate(String JSONDate, String formatString){
-            long milliSec = Long.valueOf(JSONDate.replace("/Date(", "").replace(")/", ""));
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTimeInMillis(milliSec);
-            return new SimpleDateFormat(formatString).format(calendar);
-        }*/
+    }
+
+    private class ShopDataFormat {
+        private String id, name, address;
+
+        public void setId(String id) {
+            this.id = id;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public void setAddress(String address) {
+            this.address = address;
+        }
+
+        public Map<String, Object> getMapData() {
+            Map<String, Object> map = new HashMap<>();
+            map.put("id", id);
+            map.put("name", name);
+            map.put("address", address);
+            return map;
+        }
     }
 
     //非同步 Task 載入圖片，繼承自 AsyncTask

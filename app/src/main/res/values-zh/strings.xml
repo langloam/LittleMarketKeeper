@@ -5,4 +5,6 @@
     <string name="menu_QRcode">掃描QRcode</string>
     <string name="menu_Settings">設定</string>
     <string name="title_activity_news_page">新聞</string>
+    <string name="add_bookmark">加入收藏</string>
+    <string name="find_location">尋找位置</string>
 </resources>
