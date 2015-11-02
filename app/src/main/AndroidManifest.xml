@@ -66,6 +66,10 @@
             android:name=".common.Activities.MarketActivity"
             android:label="@string/title_activity_market" >
         </activity>
+        <activity
+            android:name=".common.Activities.ShopActivity"
+            android:label="@string/title_activity_shop" >
+        </activity>
     </application>
 
 </manifest>

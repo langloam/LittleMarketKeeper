@@ -46,6 +46,7 @@ public class MarketActivity extends AppCompatActivity {
     TextView Title, Content, Date, Type, Address;
     CDbManager db;
     ImageView Img;
+    List<Map<String, Object>> ResultSet;
 
 
     @Override
@@ -96,43 +97,47 @@ public class MarketActivity extends AppCompatActivity {
 
 
 
-        sqlCmd = "SELECT fShopid FROM tShopBelong where fMarketid =" + MarketID;
+        sqlCmd = "SELECT tShop._id,tShop.fId,tShop.fName,tShop.fAddress,tShop.fInfo FROM tShopBelong INNER JOIN tShop ON tShop.fId = tShopBelong.fShopid where tShopBelong.fMarketid = " + MarketID;
         table = db.QueryBySql(sqlCmd);
 
-        List<Map<String, Object>> item = new ArrayList<>();
-        item.clear();
-        Map<String, Object> shopsdata;
+        ResultSet = new ArrayList<>();
+        ResultSet.clear();
 
         while (table.moveToNext()) {
-            shopsdata = new HashMap<>();
-            shopsdata.put("lblShopTitle", table.getString(0));
+            ShopFormat shopsdata = new ShopFormat();
+            shopsdata.set_id(table.getString(0));
+            shopsdata.setId(table.getString(1));
+            shopsdata.setName(table.getString(2));
+            shopsdata.setAddress(table.getString(3));
+            shopsdata.setInfo(table.getString(4));
             Log.d("Shops_test", table.getString(0));
-            item.add(shopsdata);
+            ResultSet.add(shopsdata.getMapData());
         }
         table.close();
 
-        SimpleAdapter ItemAdapter = new SimpleAdapter(this, item, R.layout.shop_list_item, new String[]{"lblShopTitle"}, new int[]{R.id.lblShopTitle});
+        SimpleAdapter ItemAdapter = new SimpleAdapter(this, ResultSet, R.layout.shop_list_item, new String[]{"name"}, new int[]{R.id.lblShopTitle});
 
         ListView shopList = (ListView) this.findViewById(R.id.ShopListView);
         shopList.setAdapter(ItemAdapter);
 
-//        newsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                ListView list = (ListView) parent;
-//                HashMap<String, Object> map = (HashMap<String, Object>) list.getItemAtPosition(position);
-//                CharSequence NewsID = (CharSequence) map.get("lblnewsID");
-//
-//                Intent intent = new Intent();
-//                Bundle bundle = new Bundle();
-//
-//                intent.setClass(Tab_News.this.getContext(), NewsPageActivity.class);
-//                bundle.putCharSequence("NewsID", NewsID);
-//                intent.putExtras(bundle);
-//
-//                startActivity(intent);
-//            }
-//        });
+        shopList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                ListView list = (ListView) parent;
+
+                Intent intent = new Intent();
+                Bundle bundle = new Bundle();
+
+                intent.setClass(MarketActivity.this, ShopActivity.class);
+                bundle.putCharSequence("ShopID", ((Map<String, Object>) list.getItemAtPosition(position)).get("id").toString());
+                bundle.putCharSequence("ShopName", ((Map<String, Object>) list.getItemAtPosition(position)).get("name").toString());
+                bundle.putCharSequence("ShopAddress", ((Map<String, Object>) list.getItemAtPosition(position)).get("address").toString());
+                bundle.putCharSequence("ShopInfo", ((Map<String, Object>) list.getItemAtPosition(position)).get("info").toString());
+                intent.putExtras(bundle);
+
+                startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -240,6 +245,43 @@ public class MarketActivity extends AppCompatActivity {
             this.end = new SimpleDateFormat("yyyy/MM/dd").format(calendar.getTime());
         }
 
+    }
+
+    private class ShopFormat {
+        private String _id;
+        private String id;
+        private String name;
+        private String address;
+        private String info;
+
+        public void setInfo(String info) {
+            this.info = info;
+        }
+
+        public void set_id(String _id) {
+            this._id = _id;
+        }
+
+        public void setId(String id) {
+            this.id = id;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public void setAddress(String address) {
+            this.address = address;
+        }
+        public Map<String, Object> getMapData() {
+            HashMap<String, Object> map = new HashMap<>();
+            map.put("id", id);
+            map.put("name", name);
+            map.put("address", address);
+            map.put("info", info);
+
+            return map;
+        }
     }
 
     //非同步 Task 載入圖片，繼承自 AsyncTask
