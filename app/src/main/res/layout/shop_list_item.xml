@@ -16,13 +16,13 @@
             android:orientation="vertical">
 
             <TextView
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
                 android:id="@+id/lblShopTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
                 android:text="店家標題"
-                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                android:textColor="@color/primary_text_default_material_light" />
-
+                android:textColor="@color/primary_text_default_material_light"
+                android:textSize="20dp" />
 
         </LinearLayout>
 
