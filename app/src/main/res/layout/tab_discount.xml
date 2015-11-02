@@ -23,33 +23,56 @@
                 android:layout_height="wrap_content"
                 android:fadingEdge="none"
                 android:scrollbars="none"
-                android:layout_marginBottom="10dp"
-                >
-            </Gallery>
+                android:layout_marginBottom="10dp"/>
 
-            <ImageButton
+            <LinearLayout
                 android:id="@+id/imgbtn1"
-                android:background="@color/White"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginBottom="10dp"
-                android:height="150dp"
-                android:src="@drawable/img_coupon_03"
-                />
-            <ImageButton
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="10dp"
+                android:background="@drawable/abc_popup_background_mtrl_mult">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/icon_coupon"/>
+
+                <TextView
+                    android:id="@+id/couponText1"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center_horizontal|center_vertical"
+                    android:text="test"
+                    android:textSize="25dp"/>
+
+            </LinearLayout>
+
+            <LinearLayout
                 android:id="@+id/imgbtn2"
-                android:background="@color/White"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginBottom="10dp"
-                android:height="150dp"
-                android:src="@drawable/img_coupon_08"
-                />
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="10dp"
+                android:background="@drawable/abc_popup_background_mtrl_mult">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/icon_coupon"/>
+
+                <TextView
+                    android:id="@+id/couponText2"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center_horizontal|center_vertical"
+                    android:text="test"
+                    android:textSize="25dp"/>
+
+            </LinearLayout>
 
 
         </LinearLayout>
-
-
 
     </ScrollView>
 
