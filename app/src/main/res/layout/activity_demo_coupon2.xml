@@ -23,7 +23,7 @@
                 android:id="@+id/DemoCoupon1_txb2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="16dp"
+                android:textSize="25dp"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large"
                 android:textColor="@color/text"/>
 

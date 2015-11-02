@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.os.StrictMode;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -19,6 +21,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONArray;
@@ -27,6 +30,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.Serializable;
 import java.lang.reflect.Type;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -42,6 +46,7 @@ import samples.exoguru.materialtabs.R;
 import samples.exoguru.materialtabs.common.Adapter.ImageAdapter;
 import samples.exoguru.materialtabs.common.Demo.DemoCoupon1;
 import samples.exoguru.materialtabs.common.Demo.DemoCoupon2;
+import samples.exoguru.materialtabs.common.Demo.couponInfo;
 
 /**
  * Created by Edwin on 15/02/2015.
@@ -53,6 +58,9 @@ public class Tab_Discount extends Fragment {
     private TimerTask mTimerTask;
     private Handler mHandler = new Handler();
     private int[] Pics = {R.drawable.img1, R.drawable.img2};
+    ArrayList<couponInfo> objList=null;
+    Type type = new TypeToken<ArrayList<couponInfo>>(){}.getType();
+
 
 
     @Override
@@ -115,9 +123,11 @@ public class Tab_Discount extends Fragment {
             String JsonString = r.readLine();
             Log.d("FB","JsonString:"+JsonString);
 
-            Gson gson = new Gson();
-            Type type = new TypeToken<List<couponInfo>>(){}.getType();
-            List<couponInfo> objList = gson.fromJson(JsonString, type);
+            //Gson gson = new Gson();
+
+            Gson gson =  new Gson();
+
+            objList = gson.fromJson(JsonString, type);
 
             Log.d("FB","Id:"+objList.get(0).getId());
             Log.d("FB","Name:"+objList.get(0).getName());
@@ -162,15 +172,30 @@ public class Tab_Discount extends Fragment {
     View.OnClickListener imgbtn1_Click = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-
-            startActivity((new Intent(getActivity(), DemoCoupon1.class)));
+            Bundle bundle = new Bundle();
+            bundle.putString("Name",objList.get(0).getName());
+            bundle.putString("Shopname",objList.get(0).getShopname());
+            bundle.putString("Bengindate",objList.get(0).getBengindate());
+            bundle.putString("Enddate",objList.get(0).getEnddate());
+            bundle.putString("Address",objList.get(0).getAddress());
+            Intent intent = new Intent(getActivity(), DemoCoupon1.class);
+            intent.putExtras(bundle);
+            startActivity(intent);
         }
     };
 
     View.OnClickListener imgbtn2_Click = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            startActivity((new Intent(getActivity(), DemoCoupon2.class)));
+            Bundle bundle = new Bundle();
+            bundle.putString("Name",objList.get(1).getName());
+            bundle.putString("Shopname",objList.get(1).getShopname());
+            bundle.putString("Bengindate",objList.get(1).getBengindate());
+            bundle.putString("Enddate",objList.get(1).getEnddate());
+            bundle.putString("Address",objList.get(1).getAddress());
+            Intent intent = new Intent(getActivity(), DemoCoupon2.class);
+            intent.putExtras(bundle);
+            startActivity(intent);
         }
     };
 
@@ -245,89 +270,4 @@ public class Tab_Discount extends Fragment {
     View imgbtn1,imgbtn2;
     TextView couponText1,couponText2;
 
-
-
-    private class couponInfo{
-        public String getAddress() {
-            return address;
-        }
-
-        public void setAddress(String address) {
-            this.address = address;
-        }
-
-        public String getBengindate() {
-            return bengindate;
-        }
-
-        public void setBengindate(String bengindate) {
-            this.bengindate = bengindate;
-        }
-
-        public String getBuliddate() {
-            return buliddate;
-        }
-
-        public void setBuliddate(String buliddate) {
-            this.buliddate = buliddate;
-        }
-
-        public String getEnddate() {
-            return enddate;
-        }
-
-        public void setEnddate(String enddate) {
-            this.enddate = enddate;
-        }
-
-        public String getId() {
-            return id;
-        }
-
-        public void setId(String id) {
-            this.id = id;
-        }
-
-        public String getInfo() {
-            return info;
-        }
-
-        public void setInfo(String info) {
-            this.info = info;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        public String getShopid() {
-            return shopid;
-        }
-
-        public void setShopid(String shopid) {
-            this.shopid = shopid;
-        }
-        private String id;
-        private String name;
-        private String info;
-        private String bengindate;
-        private String enddate;
-        private String buliddate;
-        private String shopid;
-        private String shopname;
-
-        public String getShopname() {
-            return shopname;
-        }
-
-        public void setShopname(String shopname) {
-            this.shopname = shopname;
-        }
-
-        private String address;
-    }
 }
