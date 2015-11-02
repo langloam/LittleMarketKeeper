@@ -75,6 +75,13 @@ public class CDbManager extends SQLiteOpenHelper {
         sql+=" fInfo TEXT)";
         db.execSQL(sql);
 
+        sql="CREATE TABLE IF NOT EXISTS tShopBelong (";
+        sql+=" _id INTEGER PRIMARY KEY ,";
+        sql+=" fId TEXT ,";
+        sql+=" fShopid TEXT ,";
+        sql+=" fMarketid TEXT)";
+        db.execSQL(sql);
+
         sql="CREATE TABLE IF NOT EXISTS tDiscount (";
         sql+=" _id INTEGER PRIMARY KEY ,";
         sql+=" fId TEXT ,";

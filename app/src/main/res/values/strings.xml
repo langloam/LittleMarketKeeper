@@ -29,5 +29,6 @@
     <string name="title_activity_demo_coupon1">新北市商圈嘉年華</string>
     <string name="title_activity_demo_coupon2">樂山娘札幌拉麵</string>
     <string name="title_activity_market_info">MarketInfoActivity</string>
+    <string name="title_activity_shop">ShopActivity</string>
 
 </resources>

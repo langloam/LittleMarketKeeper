@@ -288,7 +288,8 @@ public class MainActivity extends AppCompatActivity {
             //Log.d("appCREATE", "資料庫check");
             //優惠初始化(未實作)
             //Coupon();
-
+            //店家所屬資料初始化
+            ShopBelongInit();
         }
     }
 
@@ -453,6 +454,47 @@ public class MainActivity extends AppCompatActivity {
             Log.d("URLERROR",e.getMessage());
             e.printStackTrace();
         }
+    }
+
+    private void ShopBelongInit() {
+        CDbManager db = new CDbManager(MainActivity.this);
+        db.Delete("tShopBelong");
+        Log.d("appCREATE", "ShopBelong_del");
+
+        StrictMode.ThreadPolicy l_policy =  new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(l_policy);
+
+        try {
+
+            URL url=new URL("http://mylittlemarket.azurewebsites.net/FindShopBelong.aspx");
+            URLConnection conn=url.openConnection();
+            InputStream streamIn=conn.getInputStream();
+
+            BufferedReader r = new BufferedReader(new InputStreamReader(streamIn));
+            JSONArray jsonArray= new JSONArray(r.readLine());
+            for(int i=0; i<jsonArray.length(); i++) {
+
+                ContentValues row =new ContentValues();
+                row.put("fId",Integer.valueOf(jsonArray.getJSONObject(i).get("id").toString()));
+                row.put("fShopid",jsonArray.getJSONObject(i).get("shopid").toString());
+                row.put("fMarketid",jsonArray.getJSONObject(i).get("marketid").toString());
+                db = new CDbManager(MainActivity.this);
+                db.Insert("tShopBelong", row);
+
+            }
+//            Toast.makeText(MainActivity.this, "新增所屬資料成功", Toast.LENGTH_SHORT).show();
+        } catch (MalformedURLException e) {
+            Log.d("URLERROR", e.getMessage());
+            e.printStackTrace();
+        }catch (IOException e) {
+            Log.d("URLERROR",e.getMessage());
+            e.printStackTrace();
+        }catch (Exception e) {
+            Log.d("URLERROR",e.getMessage());
+            e.printStackTrace();
+        }
+
+
     }
 
     private void setTabsTitles() {

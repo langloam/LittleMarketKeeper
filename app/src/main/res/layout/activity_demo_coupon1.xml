@@ -3,8 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="samples.exoguru.materialtabs.common.Demo.DemoCoupon1"
-    android:orientation="vertical"
-    >
+    android:orientation="vertical">
 
     <include
         android:id="@+id/DemoCoupon1_ToolBar"
@@ -27,9 +26,9 @@
                 android:id="@+id/DemoCoupon1_txb1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="16dp"
+                android:textSize="25dp"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                android:textColor="@color/text" />
+                android:textColor="@color/text"/>
 
         </LinearLayout>
 

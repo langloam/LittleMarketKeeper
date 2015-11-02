@@ -4,38 +4,77 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.lang.reflect.Type;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
+
 import samples.exoguru.materialtabs.R;
+import samples.exoguru.materialtabs.common.Tabs.Tab_Discount;
 
 public class DemoCoupon1 extends AppCompatActivity {
+
+    ArrayList<couponInfo> objList=null;
+    Type type = new TypeToken<ArrayList<couponInfo>>(){}.getType();
+    ActionBar ActBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_demo_coupon1);
 
+        setContentView(R.layout.activity_demo_coupon1);
         Toolbar toolbar = (Toolbar) findViewById(R.id.DemoCoupon1_ToolBar);
         setSupportActionBar(toolbar);
-        ActionBar ActBar = getSupportActionBar();
+        ActBar = getSupportActionBar();
         ActBar.setDisplayOptions(ActionBar.DISPLAY_HOME_AS_UP | ActionBar.DISPLAY_SHOW_TITLE);
 
         TextView DemoCoupon1_txb1 = (TextView) findViewById(R.id.DemoCoupon1_txb1);
 
-        DemoCoupon1_txb1.setText("熱情邀約您一起 看見新北 ● 探索無限可能\n" +
-                "「2014新北市商圈嘉年華」活動開跑! 期間推出「新北商圈遊程行程」\n規劃出9條不同遊逛行程，教你怎樣玩最好玩~\n活動期間將舉辦一系列商圈行銷活動及消費好康優惠!" +
-                "矽谷溫泉會館為「2014新北市商圈嘉年華」的特約店家，推出限定好康優惠! \n" +
-                "\n凡貴賓出示 \"2014新北市商圈嘉年華活動手冊\"，即可享 \n" +
-                "\n好康優惠1. 住宿優惠享定價5.5折，並贈送限量獨家設計款人字拖兩雙。 (數量有限，送完為止) \n" +
-                "\n好康優惠2. 泡湯兩小時享優惠價 $999 / 2人。" +
-                "\n* 注意事項：住宿泡湯請事先預約並告知使用好康優惠，服務專線 (02)2218-0101。\n" +
-                "\n" +
-                "● 活動期間：2014/9/28(日) ~ 2014/10/31(五) \n" +
-                "● 活動手冊索取地點：至新北市各商圈、觀光工廠、區公所、旅客服務中心及市府洽公處等，約100處提供索取。\n" +
-                "● 更多詳情請至2014新北市商圈嘉年華活動官網：http://www.newtaipeishopping.tw/");
 
+
+
+
+        String data = getIntent().getStringExtra("Bengindate");
+
+        long MillionSecDate = Long.valueOf(data.replace("/Date(", "").replace(")/", ""));
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(MillionSecDate);
+        String Bengindate = new SimpleDateFormat("yyyy/MM/dd").format(calendar.getTime());
+
+
+        data =getIntent().getStringExtra("Enddate");
+
+        MillionSecDate = Long.valueOf(data.replace("/Date(", "").replace(")/", ""));
+        calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(MillionSecDate);
+
+        String Enddate = new SimpleDateFormat("yyyy/MM/dd").format(calendar.getTime());
+
+
+
+        DemoCoupon1_txb1.setText("優惠名稱:" + getIntent().getStringExtra("Name") +
+                "\n店家:" + getIntent().getStringExtra("Shopname") +
+                "\n起始日期:" + Bengindate +
+                "\n結束日期:" + Enddate +
+                                "\n店家地址:"+ getIntent().getStringExtra("Address"));
+
+        ActBar.setTitle(getIntent().getStringExtra("Shopname"));
     }
 
 

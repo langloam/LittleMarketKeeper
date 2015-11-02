@@ -1,26 +1,52 @@
 package samples.exoguru.materialtabs.common.Tabs;
 
 
+import android.content.ContentValues;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Parcel;
+import android.os.Parcelable;
+import android.os.StrictMode;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Gallery;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
+
+import org.json.JSONArray;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Serializable;
+import java.lang.reflect.Type;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import samples.exoguru.materialtabs.DB.CDbManager;
+import samples.exoguru.materialtabs.MainActivity;
 import samples.exoguru.materialtabs.R;
 import samples.exoguru.materialtabs.common.Adapter.ImageAdapter;
 import samples.exoguru.materialtabs.common.Demo.DemoCoupon1;
 import samples.exoguru.materialtabs.common.Demo.DemoCoupon2;
+import samples.exoguru.materialtabs.common.Demo.couponInfo;
 
 /**
  * Created by Edwin on 15/02/2015.
@@ -32,6 +58,9 @@ public class Tab_Discount extends Fragment {
     private TimerTask mTimerTask;
     private Handler mHandler = new Handler();
     private int[] Pics = {R.drawable.img1, R.drawable.img2};
+    ArrayList<couponInfo> objList=null;
+    Type type = new TypeToken<ArrayList<couponInfo>>(){}.getType();
+
 
 
     @Override
@@ -44,6 +73,10 @@ public class Tab_Discount extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
+        couponText1 = (TextView) getActivity().findViewById(R.id.couponText1);
+        couponText2 = (TextView) getActivity().findViewById(R.id.couponText2);
+        couponInit();
 
         gallery = (Gallery) getView().findViewById(R.id.UI_Gallery);
         gallery.setAdapter(new ImageAdapter(getActivity(), Pics));
@@ -62,25 +95,107 @@ public class Tab_Discount extends Fragment {
         //設定點擊圖片時觸發
         //mGallery.setOnItemClickListener(click);
 
-        imgbtn1 = (ImageButton) getView().findViewById(R.id.imgbtn1);
+        imgbtn1 = (View) getView().findViewById(R.id.imgbtn1);
         imgbtn1.setOnClickListener(imgbtn1_Click);
-        imgbtn2 = (ImageButton) getView().findViewById(R.id.imgbtn2);
+        imgbtn2 = (View) getView().findViewById(R.id.imgbtn2);
         imgbtn2.setOnClickListener(imgbtn2_Click);
+
+
+
+
     }
+
+    private void couponInit() {
+        Log.d("FB","couponInit");
+
+        StrictMode.ThreadPolicy l_policy =  new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(l_policy);
+
+        try {
+            URL url=new URL("http://mylittlemarket.azurewebsites.net/FindDiscontRandom.aspx");
+            URLConnection conn = url.openConnection();
+            InputStream streamIn = conn.getInputStream();
+            Log.d("FB","連線成功");
+            BufferedReader r = new BufferedReader(new InputStreamReader(streamIn));
+
+
+
+            String JsonString = r.readLine();
+            Log.d("FB","JsonString:"+JsonString);
+
+            //Gson gson = new Gson();
+
+            Gson gson =  new Gson();
+
+            objList = gson.fromJson(JsonString, type);
+
+            Log.d("FB","Id:"+objList.get(0).getId());
+            Log.d("FB","Name:"+objList.get(0).getName());
+            Log.d("FB","Info:"+objList.get(0).getInfo());
+            Log.d("FB","Bengindate:"+objList.get(0).getBengindate());
+            Log.d("FB","Enddate:"+objList.get(0).getEnddate());
+            Log.d("FB","Buliddate:"+objList.get(0).getBuliddate());
+            Log.d("FB","Shopid:"+objList.get(0).getShopid());
+            Log.d("FB","Shopid:"+objList.get(0).getShopname());
+            Log.d("FB","Address:"+objList.get(0).getAddress());
+
+
+            Log.d("FB", "Id:" + objList.get(1).getId());
+            Log.d("FB","Name:"+objList.get(1).getName());
+            Log.d("FB","Info:"+objList.get(1).getInfo());
+            Log.d("FB","Bengindate:"+objList.get(1).getBengindate());
+            Log.d("FB","Enddate:"+objList.get(1).getEnddate());
+            Log.d("FB","Buliddate:"+objList.get(1).getBuliddate());
+            Log.d("FB","Shopid:"+ objList.get(1).getShopid());
+            Log.d("FB","Shopid:"+objList.get(1).getShopname());
+            Log.d("FB", "Address:" + objList.get(1).getAddress());
+
+            couponText1.setText(objList.get(0).getShopname() + "\n" + objList.get(0).getName());
+            couponText2.setText(objList.get(1).getShopname() + "\n" + objList.get(1).getName());
+
+
+        } catch (MalformedURLException e) {
+            Log.d("URLERROR", e.getMessage());
+            e.printStackTrace();
+        }catch (IOException e) {
+            Log.d("URLERROR",e.getMessage());
+            e.printStackTrace();
+        }catch (Exception e) {
+            Log.d("URLERROR",e.getMessage());
+            e.printStackTrace();
+        }
+
+    }
+
 
 
     View.OnClickListener imgbtn1_Click = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-
-            startActivity((new Intent(getActivity(), DemoCoupon1.class)));
+            Bundle bundle = new Bundle();
+            bundle.putString("Name",objList.get(0).getName());
+            bundle.putString("Shopname",objList.get(0).getShopname());
+            bundle.putString("Bengindate",objList.get(0).getBengindate());
+            bundle.putString("Enddate",objList.get(0).getEnddate());
+            bundle.putString("Address",objList.get(0).getAddress());
+            Intent intent = new Intent(getActivity(), DemoCoupon1.class);
+            intent.putExtras(bundle);
+            startActivity(intent);
         }
     };
 
     View.OnClickListener imgbtn2_Click = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            startActivity((new Intent(getActivity(), DemoCoupon2.class)));
+            Bundle bundle = new Bundle();
+            bundle.putString("Name",objList.get(1).getName());
+            bundle.putString("Shopname",objList.get(1).getShopname());
+            bundle.putString("Bengindate",objList.get(1).getBengindate());
+            bundle.putString("Enddate",objList.get(1).getEnddate());
+            bundle.putString("Address",objList.get(1).getAddress());
+            Intent intent = new Intent(getActivity(), DemoCoupon2.class);
+            intent.putExtras(bundle);
+            startActivity(intent);
         }
     };
 
@@ -152,7 +267,7 @@ public class Tab_Discount extends Fragment {
     };
     */
 
-    ImageButton imgbtn1,imgbtn2;
-
+    View imgbtn1,imgbtn2;
+    TextView couponText1,couponText2;
 
 }

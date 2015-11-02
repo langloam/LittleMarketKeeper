@@ -238,10 +238,12 @@ public class SearchMarketFragment extends Fragment {
     }
 
     private class ResultFormat {
+        private String id;
         private String title;
         private String type;
         private String date;
-        private String id;
+
+        public void setId(String id) { this.id = id; }
 
         public void setTitle(String title) {
             this.title = title;
@@ -258,12 +260,9 @@ public class SearchMarketFragment extends Fragment {
             this.date = new SimpleDateFormat("yyyy/MM/dd").format(calendar.getTime());
         }
 
-        public void setId(String id) {
-            this.id = id;
-        }
-
         public Map<String, Object> getMapData() {
             HashMap<String, Object> map = new HashMap<>();
+            map.put("id", id);
             map.put("title", title);
             map.put("info", "建立日期：" + date + "\n" + "商圈分類：" + type);
             map.put("id", id);
