@@ -2,6 +2,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="samples.exoguru.materialtabs.common.Activities.MarketInfoActivity">
-    <item android:id="@+id/action_settings" android:title="@string/action_settings"
-        android:orderInCategory="100" app:showAsAction="never" />
+    <item
+        android:id="@+id/menu_market_location"
+        android:icon="@drawable/ic_location"
+        android:title="@string/find_location"
+        app:showAsAction="always"/>
+    <item
+        android:id="@+id/menu_market_bookmark"
+        android:icon="@drawable/ic_bookmarks_outline"
+        android:title="@string/add_bookmark"
+        app:showAsAction="always"/>
 </menu>

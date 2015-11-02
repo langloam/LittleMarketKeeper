@@ -238,12 +238,9 @@ public class SearchMarketFragment extends Fragment {
     }
 
     private class ResultFormat {
-        private String id;
         private String title;
         private String type;
         private String date;
-
-        public void setId(String id) { this.id = id; }
 
         public void setTitle(String title) {
             this.title = title;
@@ -265,7 +262,6 @@ public class SearchMarketFragment extends Fragment {
             map.put("id", id);
             map.put("title", title);
             map.put("info", "建立日期：" + date + "\n" + "商圈分類：" + type);
-            map.put("id", id);
 
             return map;
         }

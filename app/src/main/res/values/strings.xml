@@ -31,4 +31,8 @@
     <string name="title_activity_market_info">MarketInfoActivity</string>
     <string name="title_activity_shop">ShopActivity</string>
 
+    <!-- 收藏&地圖 -->
+    <string name="add_bookmark">Add to bookmark</string>
+    <string name="find_location">Find location</string>
+
 </resources>
