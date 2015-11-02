@@ -30,5 +30,6 @@
     <string name="title_activity_demo_coupon2">樂山娘札幌拉麵</string>
     <string name="title_activity_market">商圈資料</string>
     <string name="title_activity_shop">ShopActivity</string>
+    <string name="title_activity_market_info">MarketInfoActivity</string>
 
 </resources>

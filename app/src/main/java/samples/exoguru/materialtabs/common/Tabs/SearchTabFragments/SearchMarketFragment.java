@@ -30,7 +30,7 @@ import java.util.Map;
 
 import samples.exoguru.materialtabs.DB.CDbManager;
 import samples.exoguru.materialtabs.R;
-import samples.exoguru.materialtabs.common.Activities.MarketActivity;
+import samples.exoguru.materialtabs.common.Activities.MarketInfoActivity;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -69,14 +69,14 @@ public class SearchMarketFragment extends Fragment {
         typeListAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         MarketTypeSelector.setAdapter(typeListAdapter);
 
-        String sqlCmd = "SELECT fId, fName, fSubmitdate, fType FROM tMarket";
+        String sqlCmd = "SELECT fName, fSubmitdate, fType, fId FROM tMarket";
         table = db.QueryBySql(sqlCmd);
         while (table.moveToNext()) {
             ResultFormat tmp = new ResultFormat();
-            tmp.setId(table.getString(0));
-            tmp.setTitle(table.getString(1));
-            tmp.setDate(table.getString(2));
-            tmp.setType(table.getString(3));
+            tmp.setTitle(table.getString(0));
+            tmp.setDate(table.getString(1));
+            tmp.setType(table.getString(2));
+            tmp.setId(table.getString(3));
             ResultSet.add(tmp.getMapData());
         }
         table.close();
@@ -86,13 +86,11 @@ public class SearchMarketFragment extends Fragment {
         MarketListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                ListView list = (ListView) parent;
-                ResultFormat rs = new ResultFormat();
                 Intent intent = new Intent();
                 Bundle bundle = new Bundle();
 
-                intent.setClass(SearchMarketFragment.this.getContext(), MarketActivity.class);
-                bundle.putCharSequence("MarketID",((Map<String, Object>)list.getItemAtPosition(position)).get("id").toString() );
+                intent.setClass(SearchMarketFragment.this.getContext(), MarketInfoActivity.class);
+                bundle.putCharSequence("MarketId", ((Map<String, Object>)parent.getItemAtPosition(position)).get("id").toString());
                 intent.putExtras(bundle);
 
                 startActivity(intent);
@@ -240,12 +238,10 @@ public class SearchMarketFragment extends Fragment {
     }
 
     private class ResultFormat {
-        private String id;
         private String title;
         private String type;
         private String date;
-
-        public void setId(String id) { this.id = id; }
+        private String id;
 
         public void setTitle(String title) {
             this.title = title;
@@ -260,6 +256,10 @@ public class SearchMarketFragment extends Fragment {
             Calendar calendar = Calendar.getInstance();
             calendar.setTimeInMillis(MilliSec);
             this.date = new SimpleDateFormat("yyyy/MM/dd").format(calendar.getTime());
+        }
+
+        public void setId(String id) {
+            this.id = id;
         }
 
         public Map<String, Object> getMapData() {
