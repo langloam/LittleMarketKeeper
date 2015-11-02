@@ -28,5 +28,6 @@
     <string name="action_settings">Settings</string>
     <string name="title_activity_demo_coupon1">新北市商圈嘉年華</string>
     <string name="title_activity_demo_coupon2">樂山娘札幌拉麵</string>
+    <string name="title_activity_market">商圈資料</string>
 
 </resources>

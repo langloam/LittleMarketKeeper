@@ -2,6 +2,7 @@ package samples.exoguru.materialtabs.common.Tabs.SearchTabFragments;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -29,6 +30,7 @@ import java.util.Map;
 
 import samples.exoguru.materialtabs.DB.CDbManager;
 import samples.exoguru.materialtabs.R;
+import samples.exoguru.materialtabs.common.Activities.MarketActivity;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -67,18 +69,35 @@ public class SearchMarketFragment extends Fragment {
         typeListAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         MarketTypeSelector.setAdapter(typeListAdapter);
 
-        String sqlCmd = "SELECT fName, fSubmitdate, fType FROM tMarket";
+        String sqlCmd = "SELECT fId, fName, fSubmitdate, fType FROM tMarket";
         table = db.QueryBySql(sqlCmd);
         while (table.moveToNext()) {
             ResultFormat tmp = new ResultFormat();
-            tmp.setTitle(table.getString(0));
-            tmp.setDate(table.getString(1));
-            tmp.setType(table.getString(2));
+            tmp.setId(table.getString(0));
+            tmp.setTitle(table.getString(1));
+            tmp.setDate(table.getString(2));
+            tmp.setType(table.getString(3));
             ResultSet.add(tmp.getMapData());
         }
         table.close();
         rsltListAdapter = new SimpleAdapter(getContext(), ResultSet, R.layout.market_list_item, new String[]{"title", "info"}, new int[]{R.id.market_list_item_title, R.id.market_list_item_info});
         MarketListView.setAdapter(rsltListAdapter);
+
+        MarketListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                ListView list = (ListView) parent;
+                ResultFormat rs = new ResultFormat();
+                Intent intent = new Intent();
+                Bundle bundle = new Bundle();
+
+                intent.setClass(SearchMarketFragment.this.getContext(), MarketActivity.class);
+                bundle.putCharSequence("MarketID",((Map<String, Object>)list.getItemAtPosition(position)).get("id").toString() );
+                intent.putExtras(bundle);
+
+                startActivity(intent);
+            }
+        });
 
         MarketTypeSelector.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -221,9 +240,12 @@ public class SearchMarketFragment extends Fragment {
     }
 
     private class ResultFormat {
+        private String id;
         private String title;
         private String type;
         private String date;
+
+        public void setId(String id) { this.id = id; }
 
         public void setTitle(String title) {
             this.title = title;
@@ -242,6 +264,7 @@ public class SearchMarketFragment extends Fragment {
 
         public Map<String, Object> getMapData() {
             HashMap<String, Object> map = new HashMap<>();
+            map.put("id", id);
             map.put("title", title);
             map.put("info", "建立日期：" + date + "\n" + "商圈分類：" + type);
 
