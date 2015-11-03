@@ -9,8 +9,6 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
 import android.database.Cursor;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.annotation.Nullable;
@@ -21,6 +19,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ExpandableListAdapter;
 
 import android.widget.ExpandableListView;
@@ -29,9 +28,9 @@ import android.widget.ExpandableListView.OnGroupClickListener;
 import android.widget.ExpandableListView.OnGroupCollapseListener;
 import android.widget.ExpandableListView.OnGroupExpandListener;
 import android.widget.Toast;
-
 import samples.exoguru.materialtabs.DB.CDbManager;
 import samples.exoguru.materialtabs.R;
+
 
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
@@ -61,9 +60,9 @@ import java.util.List;
 
 public class Tab_Collect extends Fragment {
 
-    String FBID, ItemLongClick = null;
+    public static String FBID;
 
-
+    String ItemLongClick = null;
     CallbackManager callbackManager;
 
     ExpandableListAdapter listAdapter;
@@ -74,7 +73,15 @@ public class Tab_Collect extends Fragment {
     List<String> business,stores;
 
     @Override
+    public void onResume() {
+        super.onResume();
+        facebookInit();
+        collectInit();
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+
         return inflater.inflate(R.layout.tab_collect,container, false);
     }
 
@@ -85,10 +92,11 @@ public class Tab_Collect extends Fragment {
         //HashKey();
         facebookInit();
         collectInit();
-
     }
 
-    private void collectInit() {
+
+
+    public void collectInit() {
 
         // get the listview
         expListView = (ExpandableListView) getActivity().findViewById(R.id.lvExp);
@@ -242,10 +250,10 @@ public class Tab_Collect extends Fragment {
                                     switch (groupPosition) {
 
                                         case 0:
-                                            Cursor table = (new CDbManager(getActivity())).QueryBySql("SELECT * FROM tCollectBusiness where fBusinessName = " + ItemLongClick);
+                                            Cursor table = (new CDbManager(getActivity())).QueryBySql("SELECT * FROM tCollectBusiness where fBusinessName = '" + ItemLongClick+"'");
                                             table.moveToFirst();
 
-                                            (new CDbManager(getActivity())).Delete("tCollectStores", table.getInt(0));
+                                            (new CDbManager(getActivity())).Delete("tCollectBusiness", table.getInt(0));
                                             business.remove(childPosition);
                                             expListView.setAdapter(listAdapter);
                                             break;
