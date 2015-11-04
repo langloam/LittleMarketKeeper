@@ -15,7 +15,7 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@drawable/icon_coupon"
+        android:icon="@drawable/img_appicon"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
@@ -36,11 +36,6 @@
 
             <!-- screenOrientation為固定畫面的方向 -->
             <!-- 參數為 landscape為橫向 portrait為縱向 nosensor為關閉重力感應器 -->
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".common.Menu.Menu_Settings"
@@ -90,6 +85,15 @@
         <activity
             android:name=".common.Activities.MapsActivity"
             android:label="@string/title_activity_maps" >
+        </activity>
+        <activity
+            android:name=".common.Activities.LodingActivity"
+            android:label="@string/title_activity_loding" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
     </application>
 

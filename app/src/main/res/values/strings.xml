@@ -36,5 +36,6 @@
     <string name="add_bookmark">Add to bookmark</string>
     <string name="find_location">Find location</string>
     <string name="title_activity_maps">Map</string>
+    <string name="title_activity_loding">小圈子</string>
 
 </resources>

@@ -20,6 +20,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.facebook.FacebookSdk;
@@ -72,6 +73,8 @@ public class MainActivity extends AppCompatActivity {
         FacebookSdk.sdkInitialize(this.getApplicationContext());
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
 
         //檢查網路狀態
         checkNetwork();
