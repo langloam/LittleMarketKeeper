@@ -42,8 +42,11 @@ public class DemoCoupon2 extends AppCompatActivity {
         ActBar = getSupportActionBar();
         ActBar.setDisplayOptions(ActionBar.DISPLAY_HOME_AS_UP | ActionBar.DISPLAY_SHOW_TITLE);
 
-        TextView DemoCoupon1_txb2 = (TextView) findViewById(R.id.DemoCoupon1_txb2);
-
+        DemoCoupon2_txbCouponContent = (TextView) findViewById(R.id.DemoCoupon2_txbCouponContent);
+        DemoCoupon2_txbStopName = (TextView) findViewById(R.id.DemoCoupon2_txbStopName);
+        DemoCoupon2_txbBengindate = (TextView) findViewById(R.id.DemoCoupon2_txbBengindate);
+        DemoCoupon2_txbEnddate = (TextView) findViewById(R.id.DemoCoupon2_txbEnddate);
+        DemoCoupon2_txbAddress = (TextView) findViewById(R.id.DemoCoupon2_txbAddress);
         String data = getIntent().getStringExtra("Bengindate");
 
         long MillionSecDate = Long.valueOf(data.replace("/Date(", "").replace(")/", ""));
@@ -60,15 +63,13 @@ public class DemoCoupon2 extends AppCompatActivity {
 
         String Enddate = new SimpleDateFormat("yyyy/MM/dd").format(calendar.getTime());
 
+        DemoCoupon2_txbCouponContent.setText(getIntent().getStringExtra("Info"));
+        DemoCoupon2_txbStopName.setText(getIntent().getStringExtra("Shopname"));
+        DemoCoupon2_txbBengindate.setText(Bengindate);
+        DemoCoupon2_txbEnddate.setText(Enddate);
+        DemoCoupon2_txbAddress.setText(getIntent().getStringExtra("Address"));
 
-
-        DemoCoupon1_txb2.setText("優惠名稱:" + getIntent().getStringExtra("Name") +
-                "\n店家:" + getIntent().getStringExtra("Shopname") +
-                "\n起始日期:" + Bengindate +
-                "\n結束日期:" + Enddate +
-                "\n店家地址:" + getIntent().getStringExtra("Address"));
-
-        ActBar.setTitle(getIntent().getStringExtra("Shopname"));
+        ActBar.setTitle(getIntent().getStringExtra("Shopname")+"-"+getIntent().getStringExtra("Name"));
     }
 
     @Override
@@ -90,4 +91,6 @@ public class DemoCoupon2 extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+    TextView DemoCoupon2_txbCoupon,DemoCoupon2_txbCouponContent,DemoCoupon2_txbStopName,DemoCoupon2_txbBengindate,DemoCoupon2_txbEnddate,DemoCoupon2_txbAddress;
 }
