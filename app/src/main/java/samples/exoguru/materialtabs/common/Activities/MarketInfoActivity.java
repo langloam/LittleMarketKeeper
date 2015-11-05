@@ -1,5 +1,7 @@
 package samples.exoguru.materialtabs.common.Activities;
 
+import android.content.ContentValues;
+import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -18,6 +20,9 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.facebook.AccessToken;
 
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -33,6 +38,7 @@ import java.util.Map;
 
 import samples.exoguru.materialtabs.DB.CDbManager;
 import samples.exoguru.materialtabs.R;
+import samples.exoguru.materialtabs.common.Tabs.Tab_Collect;
 
 public class MarketInfoActivity extends AppCompatActivity {
 
@@ -54,7 +60,7 @@ public class MarketInfoActivity extends AppCompatActivity {
         setSupportActionBar(ActivityToolbar);
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_HOME_AS_UP | ActionBar.DISPLAY_SHOW_TITLE);
 
-        String sqlCmd = "SELECT fName, fType, fBegindate, fEnddate, fImg, fInfo, fArea FROM tMarket " +
+        String sqlCmd = "SELECT fName, fType, fBegindate, fEnddate, fImg, fInfo, fArea, fRange FROM tMarket " +
                 "WHERE fId='" + args.getCharSequence("MarketId") + "'";
         table = db.QueryBySql(sqlCmd);
         while (table.moveToNext()) {
@@ -66,6 +72,7 @@ public class MarketInfoActivity extends AppCompatActivity {
             marketData.setImgUrl(table.getString(4));
             marketData.setInfo(table.getString(5));
             marketData.setAddress(table.getString(6));
+            marketData.setRange(table.getInt(7));
         }
         table.close();
 
@@ -121,14 +128,47 @@ public class MarketInfoActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
 
-        if (id == android.R.id.home) {
-            onBackPressed();
-            return true;
+        switch (item.getItemId()){
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+            case R.id.menu_market_bookmark:
+//                Log.d("FBTEST", AccessToken.getCurrentAccessToken().getUserId());
+                Cursor table = (new CDbManager(this)).QueryBySql("SELECT * FROM tCollectBusiness where fBusinessID = '"+marketData.getId()+"'");
+                if(table.getCount()==0){
+                    ContentValues row = new ContentValues();
+//                row.put("fId",marketData.getId().toString());
+
+                    if(Tab_Collect.isFBloggedIn())
+                        row.put("fFBID", AccessToken.getCurrentAccessToken().getUserId());
+                    else
+                        row.put("fFBID", "nobody");
+                    row.put("fBusinessID", marketData.getId());
+                    row.put("fBusinessName", marketData.getName());
+                    db = new CDbManager(this);
+                    db.Insert("tCollectBusiness", row);
+                    Log.d("FBTEST", "收藏商圈成功");
+                    Toast.makeText(this, "收藏商圈成功", Toast.LENGTH_SHORT).show();
+
+                }else {
+                    Toast.makeText(this, "此商圈已經收藏過了", Toast.LENGTH_SHORT).show();
+                }
+
+                return true;
+            case R.id.menu_market_location:
+
+
+                Intent intent = new Intent();
+                Bundle bundle = new Bundle();
+                bundle.putCharSequence("MarketAddress",marketData.getAddress());
+                bundle.putCharSequence("MarketName",marketData.getName());
+                bundle.putInt("MarketRange", marketData.getRange());
+                intent.putExtras(bundle);
+                intent.setClass(this,MapsActivity.class);
+
+                startActivity(intent);
+                return true;
         }
 
         return super.onOptionsItemSelected(item);
@@ -144,12 +184,23 @@ public class MarketInfoActivity extends AppCompatActivity {
         lblContent = (TextView) findViewById(R.id.MarketInfoContent);
         picMarket = (ImageView) findViewById(R.id.MarketInfoImg);
         storeList = (ListView) findViewById(R.id.MarketInfoStoreList);
+
     }
 
     private class MarketData {
         private String id, name, info, type, imgUrl;
         private String beginTime, endTime;
         private String address;
+        private int range;
+
+
+        public int getRange() {
+            return range;
+        }
+
+        public void setRange(int range) {
+            this.range = range;
+        }
 
         public String getId() {
             return id;

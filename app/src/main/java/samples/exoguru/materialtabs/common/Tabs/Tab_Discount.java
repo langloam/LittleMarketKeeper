@@ -174,6 +174,7 @@ public class Tab_Discount extends Fragment {
         public void onClick(View v) {
             Bundle bundle = new Bundle();
             bundle.putString("Name",objList.get(0).getName());
+            bundle.putString("Info",objList.get(0).getInfo());
             bundle.putString("Shopname",objList.get(0).getShopname());
             bundle.putString("Bengindate",objList.get(0).getBengindate());
             bundle.putString("Enddate",objList.get(0).getEnddate());
@@ -189,6 +190,7 @@ public class Tab_Discount extends Fragment {
         public void onClick(View v) {
             Bundle bundle = new Bundle();
             bundle.putString("Name",objList.get(1).getName());
+            bundle.putString("Info",objList.get(1).getInfo());
             bundle.putString("Shopname",objList.get(1).getShopname());
             bundle.putString("Bengindate",objList.get(1).getBengindate());
             bundle.putString("Enddate",objList.get(1).getEnddate());

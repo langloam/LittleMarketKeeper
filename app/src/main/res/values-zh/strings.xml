@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">PrjApp</string>
+    <string name="app_name">小圈子</string>
     <string name="news_tab_title">新聞</string>
     <string name="menu_QRcode">掃描QRcode</string>
     <string name="menu_Settings">設定</string>

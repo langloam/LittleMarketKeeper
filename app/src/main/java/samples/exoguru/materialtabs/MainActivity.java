@@ -20,6 +20,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.facebook.FacebookSdk;
@@ -73,6 +74,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
+
         //檢查網路狀態
         checkNetwork();
 
@@ -81,10 +84,10 @@ public class MainActivity extends AppCompatActivity {
 
 
         // Creating The Toolbar and setting it as the Toolbar for the activity
-
         toolbar = (Toolbar) findViewById(R.id.tool_bar);
         setSupportActionBar(toolbar);
         toolbar.setTitleTextColor(0xFFFFFFFF);
+        getSupportActionBar().setTitle("小圈子");
 
 
         // Creating The ViewPagerAdapter and Passing Fragment Manager, Titles fot the Tabs and Number Of Tabs.
@@ -92,6 +95,26 @@ public class MainActivity extends AppCompatActivity {
 
         // Assigning ViewPager View and setting the adapter
         pager = (ViewPager) findViewById(R.id.pager);
+        pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener(){
+
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+
+                if(position==3){
+                    adapter.getItem(3);
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
         pager.setAdapter(adapter);
 
         // Assiging the Sliding Tab Layout View
@@ -124,12 +147,78 @@ public class MainActivity extends AppCompatActivity {
             if(Tab_Collect.isFBloggedIn()){
                 SharedPreferences sharedPreferences=getSharedPreferences("FBID", 0);
                 String FBID=sharedPreferences.getString("FBID", "No Data");
-                Log.d("FB", FBID);
+                //Log.d("FB", FBID);
 
+                //加工沒有FBID的商圈資料
+                ContentValues row =new ContentValues();
+                row.put("fFBID", FBID);
+                (new CDbManager(this)).Update("tCollectBusiness", row, "fFBID", "nobody");
+                //Log.d("FB", "更新商圈資料成功");
+
+                //收藏商圈轉GSON上傳雲端
+                //Log.d("JSON_UP", "開始上傳商圈資料");
+                Cursor table = (new CDbManager(this)).QueryBySql("SELECT * FROM tCollectBusiness");
+                if(table.getCount()>0){
+                    String datasString = null;
+                    table.moveToFirst();
+
+                    Gson gson = new Gson();
+                    List<CollectToJson> list = new ArrayList<CollectToJson>();
+                    for(int i=0;i<table.getCount();i++){
+                        CollectToJson collectToJson = new CollectToJson(
+                                table.getString(2),//fFBID
+                                String.valueOf(table.getInt(3)),//fBusinessID
+                                table.getString(4),//fBusinessName
+                                table.getString(5),//fImg
+                                table.getString(6),//fInfo
+                                table.getString(7),//fArea
+                                table.getString(8) //fContent
+                        );
+                        list.add(collectToJson);
+
+                        table.moveToNext();
+                    }
+
+                    String collectToJson = gson.toJson(list);
+
+
+                    Log.d("JSON", collectToJson);
+                    URL url= null;
+                    HttpURLConnection conn = null;
+                    try {
+                        url = new URL("http://mylittlemarket.azurewebsites.net/UpdateFBMarkets.aspx");
+                        conn = (HttpURLConnection) url.openConnection();
+                        conn.setChunkedStreamingMode(0);
+                        conn.setDoInput(true);
+                        conn.setDoOutput(true);
+                        conn.setUseCaches(false);
+
+                        // 使用POST方法
+                        conn.setRequestMethod("POST");
+                        conn.setRequestProperty("Content-Type", "application/json");
+                        OutputStream os = conn.getOutputStream();
+                        os.write(collectToJson.getBytes());
+                        os.flush();
+                        os.close();
+
+                        BufferedReader r = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
+                        Log.d("URL_IN", r.readLine());
+                        r.close();
+                    } catch (MalformedURLException e) {
+                        Log.d("URLERROR", e.getMessage());
+                        e.printStackTrace();
+                    }catch (IOException e) {
+                        Log.d("URLERROR",e.getMessage());
+                        e.printStackTrace();
+                    }catch (Exception e) {
+                        Log.d("URLERROR",e.getMessage());
+                        e.printStackTrace();
+                    }
+                }
 
                 //收藏店家轉GSON上傳雲端
                 Log.d("JSON_UP", "開始上傳店家資料");
-                Cursor table = (new CDbManager(this)).QueryBySql("SELECT * FROM tCollectStores");
+                table = (new CDbManager(this)).QueryBySql("SELECT * FROM tCollectStores");
                     if(table.getCount()>0){
                         String datasString = null;
                         table.moveToFirst();
@@ -196,69 +285,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-                //收藏商圈轉GSON上傳雲端
-                Log.d("JSON_UP", "開始上傳商圈資料");
-                table = (new CDbManager(this)).QueryBySql("SELECT * FROM tCollectBusiness");
-                if(table.getCount()>0){
-                    String datasString = null;
-                    table.moveToFirst();
 
-                    Gson gson = new Gson();
-                    List<CollectToJson> list = new ArrayList<CollectToJson>();
-                    for(int i=0;i<table.getCount();i++){
-                        CollectToJson collectToJson = new CollectToJson(
-                                table.getString(2),//fFBID
-                                String.valueOf(table.getInt(3)),//fBusinessID
-                                table.getString(4),//fBusinessName
-                                table.getString(5),//fImg
-                                table.getString(6),//fInfo
-                                table.getString(7),//fArea
-                                table.getString(8) //fContent
-                        );
-                        list.add(collectToJson);
-
-
-
-                        table.moveToNext();
-                    }
-
-                    String collectToJson = gson.toJson(list);
-
-
-                    Log.d("JSON", collectToJson);
-                    URL url= null;
-                    HttpURLConnection conn = null;
-                    try {
-                        url = new URL("http://mylittlemarket.azurewebsites.net/UpdateFBMarkets.aspx");
-                        conn = (HttpURLConnection) url.openConnection();
-                        conn.setChunkedStreamingMode(0);
-                        conn.setDoInput(true);
-                        conn.setDoOutput(true);
-                        conn.setUseCaches(false);
-
-                        // 使用POST方法
-                        conn.setRequestMethod("POST");
-                        conn.setRequestProperty("Content-Type", "application/json");
-                        OutputStream os = conn.getOutputStream();
-                        os.write(collectToJson.getBytes());
-                        os.flush();
-                        os.close();
-
-
-                        BufferedReader r = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
-                        Log.d("URL_IN", r.readLine());
-                        r.close();
-                    } catch (MalformedURLException e) {
-                        Log.d("URLERROR", e.getMessage());
-                        e.printStackTrace();
-                    }catch (IOException e) {
-                        Log.d("URLERROR",e.getMessage());
-                        e.printStackTrace();
-                    }catch (Exception e) {
-                        Log.d("URLERROR",e.getMessage());
-                        e.printStackTrace();
-                    }
-                }
             }
         }
     }
@@ -290,6 +317,21 @@ public class MainActivity extends AppCompatActivity {
             //Coupon();
             //店家所屬資料初始化
             ShopBelongInit();
+
+//        Cursor table = (new CDbManager(this)).QueryBySql("SELECT * FROM tCollectBusiness");
+//        String[] datas=new String[table.getCount()];
+//        table.moveToFirst();
+//        for(int i=0;i<datas.length;i++){
+//            datas[i]=table.getString(2)+"\r\n"+table.getString(3)+"\r\n"+table.getString(4);
+//            table.moveToNext();
+//        }
+//
+//        AlertDialog.Builder build=new AlertDialog.Builder(MainActivity.this);
+//        build.setTitle("")
+//                .setItems(datas, null)
+//                .create().show();
+//
+//        Toast.makeText(MainActivity.this, "查詢收藏資料成功", Toast.LENGTH_SHORT).show();
         }
     }
 

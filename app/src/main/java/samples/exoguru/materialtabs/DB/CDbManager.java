@@ -131,8 +131,16 @@ public class CDbManager extends SQLiteOpenHelper {
     public void Delete(String tableName){
         getWritableDatabase().delete(tableName,null,null);
     }
-    public  void Insert(String tableName,ContentValues data){
-        getWritableDatabase().insert(tableName,null,data);
+    public void Insert(String tableName,ContentValues data){
+        getWritableDatabase().insert(tableName, null, data);
+    }
+    public void Update(String tableName, ContentValues data, String KEY, String Value) {
+        // 設定修改資料的條件為編號
+        // 格式為「欄位名稱＝資料」
+        String where = KEY + "='" + Value+"'";
+
+        // 執行修改資料並回傳修改的資料數量是否成功
+        getWritableDatabase().update(tableName, data, where, null);
     }
 
     @Override

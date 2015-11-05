@@ -44,11 +44,11 @@ public class DemoCoupon1 extends AppCompatActivity {
         ActBar = getSupportActionBar();
         ActBar.setDisplayOptions(ActionBar.DISPLAY_HOME_AS_UP | ActionBar.DISPLAY_SHOW_TITLE);
 
-        TextView DemoCoupon1_txb1 = (TextView) findViewById(R.id.DemoCoupon1_txb1);
-
-
-
-
+        DemoCoupon1_txbCouponContent = (TextView) findViewById(R.id.DemoCoupon1_txbCouponContent);
+        DemoCoupon1_txbStopName = (TextView) findViewById(R.id.DemoCoupon1_txbStopName);
+        DemoCoupon1_txbBengindate = (TextView) findViewById(R.id.DemoCoupon1_txbBengindate);
+        DemoCoupon1_txbEnddate = (TextView) findViewById(R.id.DemoCoupon1_txbEnddate);
+        DemoCoupon1_txbAddress = (TextView) findViewById(R.id.DemoCoupon1_txbAddress);
 
         String data = getIntent().getStringExtra("Bengindate");
 
@@ -66,17 +66,14 @@ public class DemoCoupon1 extends AppCompatActivity {
 
         String Enddate = new SimpleDateFormat("yyyy/MM/dd").format(calendar.getTime());
 
+        DemoCoupon1_txbCouponContent.setText(getIntent().getStringExtra("Info"));
+        DemoCoupon1_txbStopName.setText(getIntent().getStringExtra("Shopname"));
+        DemoCoupon1_txbBengindate.setText(Bengindate);
+        DemoCoupon1_txbEnddate.setText(Enddate);
+        DemoCoupon1_txbAddress.setText(getIntent().getStringExtra("Address"));
 
-
-        DemoCoupon1_txb1.setText("優惠名稱:" + getIntent().getStringExtra("Name") +
-                "\n店家:" + getIntent().getStringExtra("Shopname") +
-                "\n起始日期:" + Bengindate +
-                "\n結束日期:" + Enddate +
-                                "\n店家地址:"+ getIntent().getStringExtra("Address"));
-
-        ActBar.setTitle(getIntent().getStringExtra("Shopname"));
+        ActBar.setTitle(getIntent().getStringExtra("Shopname")+"-"+getIntent().getStringExtra("Name"));
     }
-
 
 
     @Override
@@ -98,4 +95,6 @@ public class DemoCoupon1 extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+    TextView DemoCoupon1_txbCouponContent,DemoCoupon1_txbStopName,DemoCoupon1_txbBengindate,DemoCoupon1_txbEnddate,DemoCoupon1_txbAddress;
 }
