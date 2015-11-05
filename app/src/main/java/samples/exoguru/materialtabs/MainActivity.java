@@ -317,6 +317,8 @@ public class MainActivity extends AppCompatActivity {
             //Coupon();
             //店家所屬資料初始化
             ShopBelongInit();
+            //優惠初始化
+            DiscountInit();
 
 //        Cursor table = (new CDbManager(this)).QueryBySql("SELECT * FROM tCollectBusiness");
 //        String[] datas=new String[table.getCount()];
@@ -537,6 +539,49 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
+    }
+
+    private void DiscountInit() {
+        CDbManager db = new CDbManager(MainActivity.this);
+        db.Delete("tDiscount");
+        Log.d("appCREATE", "Discount_del");
+
+        StrictMode.ThreadPolicy l_policy =  new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(l_policy);
+
+        try {
+
+            URL url=new URL("http://mylittlemarket.azurewebsites.net/FindDiscont.aspx");
+            URLConnection conn=url.openConnection();
+            InputStream streamIn=conn.getInputStream();
+
+            BufferedReader r = new BufferedReader(new InputStreamReader(streamIn));
+            JSONArray jsonArray= new JSONArray(r.readLine());
+            for(int i=0; i<jsonArray.length(); i++) {
+
+                ContentValues row =new ContentValues();
+                row.put("fId",Integer.valueOf(jsonArray.getJSONObject(i).get("id").toString()));
+                row.put("fShopid",Integer.valueOf(jsonArray.getJSONObject(i).get("shopid").toString()));
+                row.put("fName",jsonArray.getJSONObject(i).get("name").toString());
+                row.put("fInfo",jsonArray.getJSONObject(i).get("info").toString());
+                row.put("fBegindate",jsonArray.getJSONObject(i).get("begindate").toString());
+                row.put("fEnddate",jsonArray.getJSONObject(i).get("enddate").toString());
+                row.put("fBuilddate",jsonArray.getJSONObject(i).get("buliddate").toString());
+                db = new CDbManager(MainActivity.this);
+                db.Insert("tDiscount", row);
+
+            }
+//            Toast.makeText(MainActivity.this, "新增店家資料成功", Toast.LENGTH_SHORT).show();
+        } catch (MalformedURLException e) {
+            Log.d("URLERROR", e.getMessage());
+            e.printStackTrace();
+        }catch (IOException e) {
+            Log.d("URLERROR",e.getMessage());
+            e.printStackTrace();
+        }catch (Exception e) {
+            Log.d("URLERROR",e.getMessage());
+            e.printStackTrace();
+        }
     }
 
     private void setTabsTitles() {

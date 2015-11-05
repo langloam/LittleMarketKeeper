@@ -19,6 +19,7 @@ import android.widget.SearchView;
 
 import samples.exoguru.materialtabs.R;
 import samples.exoguru.materialtabs.common.Tabs.SearchTabFragments.SearchMarketFragment;
+import samples.exoguru.materialtabs.common.Tabs.SearchTabFragments.SearchStoreFragment;
 
 /**
  * Created by Edwin on 15/02/2015.
@@ -56,6 +57,7 @@ public class Tab_Business extends Fragment {
 
         FragmentManager frgMgr = getFragmentManager();
         Fragment frg = new SearchMarketFragment();
+        searchNavList.setCheckedItem(R.id.search_market);
         frgMgr.beginTransaction().replace(R.id.SearchContentFrame, frg).commit();
     }
 
@@ -65,6 +67,9 @@ public class Tab_Business extends Fragment {
         switch (id){
             case R.id.search_market:
                 fragment = new SearchMarketFragment();
+                break;
+            case R.id.search_store:
+                fragment = new SearchStoreFragment();
                 break;
             default:
                 return;

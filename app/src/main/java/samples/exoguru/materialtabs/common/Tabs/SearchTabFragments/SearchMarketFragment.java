@@ -251,15 +251,15 @@ public class SearchMarketFragment extends Fragment {
             this.type = type;
         }
 
+        public void setId(String id) {
+            this.id = id;
+        }
+
         public void setDate(String date) {
             long MilliSec = Long.valueOf(date.replace("/Date(", "").replace(")/", ""));
             Calendar calendar = Calendar.getInstance();
             calendar.setTimeInMillis(MilliSec);
             this.date = new SimpleDateFormat("yyyy/MM/dd").format(calendar.getTime());
-        }
-
-        public void setId(String id) {
-            this.id = id;
         }
 
         public Map<String, Object> getMapData() {

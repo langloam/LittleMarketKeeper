@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
@@ -96,7 +97,6 @@ public class MarketInfoActivity extends AppCompatActivity {
             ShopDataFormat tmp = new ShopDataFormat();
             tmp.setId(table.getString(0));
             tmp.setName(table.getString(1));
-            Log.d("StoreNames", table.getString(1));
             tmp.setAddress(table.getString(2));
             MappedStoreList.add(tmp.getMapData());
         }
@@ -175,6 +175,21 @@ public class MarketInfoActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    AdapterView.OnItemClickListener StoreListItemClickListener = new AdapterView.OnItemClickListener() {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            Map<String, Object> storeData = (Map<String, Object>)parent.getItemAtPosition(position);
+
+            Intent intent = new Intent();
+            Bundle bundle = new Bundle();
+            bundle.putCharSequence("StoreId", storeData.get("id").toString());
+            intent.putExtras(bundle);
+            intent.setClass(getApplicationContext(), StoreInfoActivity.class);
+
+            startActivity(intent);
+        }
+    };
+
     private void InitialComponent() {
         db = new CDbManager(this.getApplicationContext());
         marketData = new MarketData();
@@ -185,7 +200,7 @@ public class MarketInfoActivity extends AppCompatActivity {
         lblContent = (TextView) findViewById(R.id.MarketInfoContent);
         picMarket = (ImageView) findViewById(R.id.MarketInfoImg);
         storeList = (ListView) findViewById(R.id.MarketInfoStoreList);
-
+        storeList.setOnItemClickListener(StoreListItemClickListener);
     }
 
     private class MarketData {
