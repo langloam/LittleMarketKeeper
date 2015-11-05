@@ -67,12 +67,8 @@
         </activity>
         <activity
             android:name=".common.Activities.MarketInfoActivity"
-            android:label="@string/title_activity_market_info" 
+            android:label="@string/title_activity_market_info"
             android:screenOrientation="portrait" >
-        </activity>
-        <activity
-            android:name=".common.Activities.ShopActivity"
-            android:label="@string/title_activity_shop" >
         </activity>
 
         <meta-data
@@ -94,6 +90,11 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".common.Activities.StoreInfoActivity"
+            android:label="@string/title_activity_store_info"
+            android:screenOrientation="portrait">
         </activity>
     </application>
 

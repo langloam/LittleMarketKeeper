@@ -1,11 +1,13 @@
 package samples.exoguru.materialtabs.common.Tabs.SearchTabFragments;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -21,6 +23,7 @@ import java.util.Map;
 
 import samples.exoguru.materialtabs.DB.CDbManager;
 import samples.exoguru.materialtabs.R;
+import samples.exoguru.materialtabs.common.Activities.StoreInfoActivity;
 
 public class SearchStoreFragment extends Fragment {
 
@@ -81,6 +84,21 @@ public class SearchStoreFragment extends Fragment {
         listStore.setAdapter(listStoreAdapter);
     }
 
+    AdapterView.OnItemClickListener StoreListItemClickListener = new AdapterView.OnItemClickListener() {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            Map<String, Object> storedata = ((Map<String, Object>)parent.getItemAtPosition(position));
+
+            Intent intent = new Intent();
+            Bundle bundle = new Bundle();
+            bundle.putCharSequence("StoreId", storedata.get("id").toString());
+            intent.setClass(getActivity(), StoreInfoActivity.class);
+            intent.putExtras(bundle);
+
+            startActivity(intent);
+        }
+    };
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -135,6 +153,7 @@ public class SearchStoreFragment extends Fragment {
         tbKeyword = (EditText) getActivity().findViewById(R.id.SearchStoreKeyword);
         btnSearch = (Button) getActivity().findViewById(R.id.SearchStoreSearchButton);
         listStore = (ListView) getActivity().findViewById(R.id.SearchStoreList);
+        listStore.setOnItemClickListener(StoreListItemClickListener);
         cbMarket = (Spinner) getActivity().findViewById(R.id.SearchStoreMarketSpinner);
     }
 
