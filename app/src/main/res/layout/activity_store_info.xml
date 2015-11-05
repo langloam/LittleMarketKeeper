@@ -1,5 +1,4 @@
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -7,25 +6,79 @@
     tools:context="samples.exoguru.materialtabs.common.Activities.StoreInfoActivity">
 
     <include
-        layout="@layout/tool_bar"
-        android:id="@+id/StoreInfoTitleBar" />
+        android:id="@+id/StoreInfoTitleBar"
+        layout="@layout/tool_bar" />
 
     <TextView
         android:id="@+id/StoreInfoBelongTo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="@style/TextAppearance.AppCompat.Small"
-        android:textColor="@color/abc_secondary_text_material_light"/>
+        android:textColor="@color/abc_secondary_text_material_light" />
 
     <TextView
         android:id="@+id/StoreInfoAddress"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="@style/TextAppearance.AppCompat.Small"
-        android:textColor="@color/abc_secondary_text_material_light"/>
+        android:textColor="@color/abc_secondary_text_material_light" />
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"></ScrollView>
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/StoreInfoContent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textColor="@color/abc_primary_text_material_light" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="優惠訊息"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                    android:textColor="@color/abc_secondary_text_material_light" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="3dp"
+                    android:background="@color/dim_foreground_material_light" />
+
+                <TextView
+                    android:id="@+id/StoreInfoDiscountInfo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:paddingBottom="@dimen/activity_vertical_margin"
+                    android:paddingTop="@dimen/activity_vertical_margin"
+                    android:text="目前尚無優惠"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                    android:textColor="@color/abc_secondary_text_material_light"
+                    android:visibility="gone" />
+
+                <ListView
+                    android:id="@+id/StoreInfoDiscountList"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
 
 </LinearLayout>
