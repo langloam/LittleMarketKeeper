@@ -89,7 +89,6 @@ public class MarketInfoActivity extends AppCompatActivity {
             ShopDataFormat tmp = new ShopDataFormat();
             tmp.setId(table.getString(0));
             tmp.setName(table.getString(1));
-            Log.d("StoreNames", table.getString(1));
             tmp.setAddress(table.getString(2));
             MappedStoreList.add(tmp.getMapData());
         }

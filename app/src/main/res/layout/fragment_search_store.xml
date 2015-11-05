@@ -1,0 +1,87 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingEnd="@dimen/activity_horizontal_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingStart="@dimen/activity_horizontal_margin"
+    tools:context="samples.exoguru.materialtabs.common.Tabs.SearchTabFragments.SearchStoreFragment">
+
+    <!-- 搜尋區塊 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="搜尋店家"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            android:textColor="@color/abc_secondary_text_material_light" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="3dp"
+            android:background="@color/dim_foreground_material_light" />
+
+        <EditText
+            android:id="@+id/SearchStoreKeyword"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:hint="請輸入關鍵字"
+            android:inputType="text" />
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Spinner
+                android:id="@+id/SearchStoreMarketSpinner"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.6" />
+
+            <Button
+                android:id="@+id/SearchStoreSearchButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.4"
+                android:drawableLeft="@drawable/ic_btn_search"
+                android:drawableStart="@drawable/ic_btn_search"
+                android:text="搜尋"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textColor="@color/abc_primary_text_material_light"/>
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- 清單區塊 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="店家列表"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            android:textColor="@color/abc_secondary_text_material_light" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="3dp"
+            android:background="@color/dim_foreground_material_light" />
+
+        <ListView
+            android:id="@+id/SearchStoreList"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent" />
+    </LinearLayout>
+</LinearLayout>

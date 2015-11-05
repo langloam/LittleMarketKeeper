@@ -241,6 +241,7 @@ public class SearchMarketFragment extends Fragment {
         private String title;
         private String type;
         private String date;
+        private String id;
 
         public void setTitle(String title) {
             this.title = title;
@@ -248,6 +249,10 @@ public class SearchMarketFragment extends Fragment {
 
         public void setType(String type) {
             this.type = type;
+        }
+
+        public void setId(String id) {
+            this.id = id;
         }
 
         public void setDate(String date) {
