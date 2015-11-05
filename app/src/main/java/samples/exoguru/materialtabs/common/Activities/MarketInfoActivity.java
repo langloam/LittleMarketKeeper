@@ -162,9 +162,9 @@ public class MarketInfoActivity extends AppCompatActivity {
 
                 Intent intent = new Intent();
                 Bundle bundle = new Bundle();
-                bundle.putCharSequence("MarketAddress",marketData.getAddress());
-                bundle.putCharSequence("MarketName",marketData.getName());
-                bundle.putInt("MarketRange", marketData.getRange());
+                bundle.putCharSequence("Address",marketData.getAddress());
+                bundle.putCharSequence("Name",marketData.getName());
+                bundle.putInt("Range", marketData.getRange());
                 intent.putExtras(bundle);
                 intent.setClass(this,MapsActivity.class);
 

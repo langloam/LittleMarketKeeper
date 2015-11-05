@@ -23,7 +23,7 @@ public class LodingActivity extends Activity {
 
 //        animFadein = AnimationUtils.loadAnimation(getApplicationContext(),
 //                R.anim.fade_in);
-        handler.sendMessageDelayed(new Message(), 5000);
+        handler.sendMessageDelayed(new Message(), 2500);
 
     }
 

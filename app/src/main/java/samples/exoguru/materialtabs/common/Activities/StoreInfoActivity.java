@@ -1,5 +1,6 @@
 package samples.exoguru.materialtabs.common.Activities;
 
+import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.support.v7.app.ActionBar;
@@ -17,6 +18,9 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.facebook.AccessToken;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -31,6 +35,7 @@ import java.util.Objects;
 import samples.exoguru.materialtabs.DB.CDbManager;
 import samples.exoguru.materialtabs.R;
 import samples.exoguru.materialtabs.common.Demo.DemoCoupon2;
+import samples.exoguru.materialtabs.common.Tabs.Tab_Collect;
 
 public class StoreInfoActivity extends AppCompatActivity {
 
@@ -169,9 +174,46 @@ public class StoreInfoActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == android.R.id.home) {
-            onBackPressed();
-            return true;
+        switch (id) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+
+            case R.id.menu_store_bookmark:
+                Cursor table = (new CDbManager(this)).QueryBySql("SELECT * FROM tCollectStores where fStoresID = '"+storeData.getMapData().get("id").toString()+"'");
+                if(table.getCount()==0){
+                    ContentValues row = new ContentValues();
+                row.put("fId", storeData.getMapData().get("id").toString());
+
+                    if(Tab_Collect.isFBloggedIn())
+                        row.put("fFBID", AccessToken.getCurrentAccessToken().getUserId());
+                    else
+                        row.put("fFBID", "nobody");
+                    row.put("fStoresID", storeData.getMapData().get("id").toString());
+                    row.put("fStoresName", storeData.getMapData().get("name").toString());
+                    db = new CDbManager(this);
+                    db.Insert("tCollectStores", row);
+                    Log.d("FBTEST", "收藏店家成功");
+                    Toast.makeText(this, "收藏店家成功", Toast.LENGTH_SHORT).show();
+
+                }else {
+                    Toast.makeText(this, "此店家已經收藏過了", Toast.LENGTH_SHORT).show();
+                }
+
+                return true;
+
+            case R.id.menu_store_location:
+
+                Intent intent = new Intent();
+                Bundle bundle = new Bundle();
+                bundle.putCharSequence("Name", storeData.getMapData().get("name").toString());
+                bundle.putCharSequence("Address", storeData.getMapData().get("address").toString());
+                bundle.putInt("Range", 0);
+                intent.putExtras(bundle);
+                intent.setClass(this, MapsActivity.class);
+
+                startActivity(intent);
+                return true;
         }
 
         return super.onOptionsItemSelected(item);

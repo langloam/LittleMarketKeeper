@@ -31,6 +31,7 @@ import android.widget.Toast;
 import samples.exoguru.materialtabs.DB.CDbManager;
 import samples.exoguru.materialtabs.R;
 import samples.exoguru.materialtabs.common.Activities.MarketInfoActivity;
+import samples.exoguru.materialtabs.common.Activities.StoreInfoActivity;
 
 
 import com.facebook.AccessToken;
@@ -166,11 +167,15 @@ public class Tab_Collect extends Fragment {
                 Log.d("FB", "點擊確認");
 
                 switch (groupPosition){
+
                     case 0:
-                        Log.d("FB", listAdapter.getChild(groupPosition, childPosition).toString().toString());
+
+//                        Log.d("FB", listAdapter.getChild(groupPosition, childPosition).toString().toString());
+//                        Log.d("FB", String.valueOf(parent.getCount()));
+//                        Log.d("FB", String.valueOf(parent.getExpandableListAdapter().getChild(groupPosition, childPosition).toString()));
                         if(listAdapter.getChild(groupPosition, childPosition).toString()!="尚未收藏商圈"){
-                            Cursor table = (new CDbManager(getActivity())).QueryBySql("SELECT * FROM tCollectBusiness where fBusinessName = '" + (parent.getItemAtPosition(childPosition + 1)).toString()+"'");
-                            Log.d("FB", (parent.getItemAtPosition(childPosition + 1)).toString());
+                            Cursor table = (new CDbManager(getActivity())).QueryBySql("SELECT * FROM tCollectBusiness where fBusinessName = '" + parent.getExpandableListAdapter().getChild(groupPosition, childPosition).toString()+"'");
+                            Log.d("FB", parent.getExpandableListAdapter().getChild(groupPosition, childPosition).toString());
                             table.moveToFirst();
 
                             Bundle bundle = new Bundle();
@@ -184,19 +189,20 @@ public class Tab_Collect extends Fragment {
 
                     case 1:
 
-                        Log.d("FB", listAdapter.getChild(groupPosition, childPosition).toString());
-
+//                        Log.d("FB", listAdapter.getChild(groupPosition, childPosition).toString());
+//                        Log.d("FB", String.valueOf(parent.getCount()));
+//                        Log.d("FB", String.valueOf(parent.getExpandableListAdapter().getChild(groupPosition, childPosition).toString()));
                         if(listAdapter.getChild(groupPosition, childPosition).toString()!="尚未收藏店家"){
 
-                            Cursor table = (new CDbManager(getActivity())).QueryBySql("SELECT * FROM tCollectStores where fStoresName = '" + (parent.getItemAtPosition(childPosition + 1)).toString()+"'");
-                            Log.d("FB", (parent.getItemAtPosition(childPosition + 1)).toString());
+                            Cursor table = (new CDbManager(getActivity())).QueryBySql("SELECT * FROM tCollectStores where fStoresName = '" + parent.getExpandableListAdapter().getChild(groupPosition, childPosition).toString()+"'");
+                            Log.d("FB", parent.getExpandableListAdapter().getChild(groupPosition, childPosition).toString());
                             table.moveToFirst();
 
                             Bundle bundle = new Bundle();
 
-                            bundle.putCharSequence("MarketId", table.getString(3));
+                            bundle.putCharSequence("StoreId", table.getString(3));
                             //待修改MarketInfoActivity.class
-                            Intent intent = new Intent(getActivity(), MarketInfoActivity.class);
+                            Intent intent = new Intent(getActivity(), StoreInfoActivity.class);
                             intent.putExtras(bundle);
                             startActivity(intent);
                         }

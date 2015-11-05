@@ -136,8 +136,12 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onStop() {
-        super.onStop();
 
+        super.onStop();
+    }
+
+    @Override
+    protected void onDestroy() {
         ConnectivityManager conManager = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);//先取得此service
         NetworkInfo networInfo = conManager.getActiveNetworkInfo();       //在取得相關資訊
 
@@ -154,6 +158,12 @@ public class MainActivity extends AppCompatActivity {
                 row.put("fFBID", FBID);
                 (new CDbManager(this)).Update("tCollectBusiness", row, "fFBID", "nobody");
                 //Log.d("FB", "更新商圈資料成功");
+
+                //加工沒有FBID的店家資料
+                row =new ContentValues();
+                row.put("fFBID", FBID);
+                (new CDbManager(this)).Update("tCollectStores", row, "fFBID", "nobody");
+                Log.d("FB", "更新店家資料成功");
 
                 //收藏商圈轉GSON上傳雲端
                 //Log.d("JSON_UP", "開始上傳商圈資料");
@@ -219,30 +229,30 @@ public class MainActivity extends AppCompatActivity {
                 //收藏店家轉GSON上傳雲端
                 Log.d("JSON_UP", "開始上傳店家資料");
                 table = (new CDbManager(this)).QueryBySql("SELECT * FROM tCollectStores");
-                    if(table.getCount()>0){
-                        String datasString = null;
-                        table.moveToFirst();
+                if(table.getCount()>0){
+                    String datasString = null;
+                    table.moveToFirst();
 
-                        Gson gson = new Gson();
-                        List<CollectToJson> list = new ArrayList<CollectToJson>();
-                        for(int i=0;i<table.getCount();i++){
-                            CollectToJson collectToJson = new CollectToJson(
-                                    table.getString(2),//fFBID
-                                    String.valueOf(table.getInt(3)),//fBusinessID
-                                    table.getString(4),//fBusinessName
-                                    table.getString(5),//fImg
-                                    table.getString(6),//fInfo
-                                    table.getString(7),//fArea
-                                    table.getString(8) //fContent
-                            );
-                            list.add(collectToJson);
+                    Gson gson = new Gson();
+                    List<CollectToJson> list = new ArrayList<CollectToJson>();
+                    for(int i=0;i<table.getCount();i++){
+                        CollectToJson collectToJson = new CollectToJson(
+                                table.getString(2),//fFBID
+                                String.valueOf(table.getInt(3)),//fBusinessID
+                                table.getString(4),//fBusinessName
+                                table.getString(5),//fImg
+                                table.getString(6),//fInfo
+                                table.getString(7),//fArea
+                                table.getString(8) //fContent
+                        );
+                        list.add(collectToJson);
 
 
 
-                            table.moveToNext();
-                        }
+                        table.moveToNext();
+                    }
 
-                        String collectToJson = gson.toJson(list);
+                    String collectToJson = gson.toJson(list);
 
 
                     Log.d("JSON", collectToJson);
@@ -281,13 +291,10 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
 
-
-
-
-
-
             }
         }
+
+        super.onDestroy();
     }
 
     public void  checkNetwork(){

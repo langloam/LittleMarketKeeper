@@ -67,7 +67,7 @@ public class Menu_Settings extends AppCompatActivity implements View.OnTouchList
         btnShare.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                shareTo("分享", "Http://www.google.com.tw", "分享");
+                shareTo("分享", "http://mylittlemarkethome.azurewebsites.net/", "分享");
             }
         });
     }

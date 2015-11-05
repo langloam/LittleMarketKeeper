@@ -81,7 +81,7 @@
                     android:id="@+id/btnVersion"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:text="版本:0.5v"
+                    android:text="版本:1.0v"
                     android:background="@null"
                     />
                 <View

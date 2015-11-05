@@ -36,10 +36,10 @@ public class MapsActivity extends FragmentActivity {
         setContentView(R.layout.activity_maps);
 
         Bundle args = this.getIntent().getExtras();
-        point = getLocationFromAddress(args.getCharSequence("MarketAddress").toString());
-        title = args.getCharSequence("MarketName").toString();
-        range = args.getInt("MarketRange");
-        Log.v("GEO", args.getCharSequence("MarketAddress").toString());
+        point = getLocationFromAddress(args.getCharSequence("Address").toString());
+        title = args.getCharSequence("Name").toString();
+        range = args.getInt("Range");
+       // Log.v("GEO", args.getCharSequence("MarketAddress").toString());
 
         setUpMapIfNeeded();
     }
